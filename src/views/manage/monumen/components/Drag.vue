@@ -3,7 +3,12 @@
     v-drag
     class="box"
     :contenteditable="true"
-    :style="{'top':top + 'px','left':left + 'px','width':horizontal ? 'auto' : '22px'}"
+    :style="{
+      'top':top + 'px',
+      'left':left + 'px','width':horizontal ? 'auto' : '22px',
+      'border-top':header ? '3px solid #4a9ff9' : '0',
+      'font-size':size ? '20px' : '16px'
+    }"
     @input="changeTxt"
     @focus="lock=true"
     @blur="lock=false"
@@ -55,6 +60,14 @@ export default {
       required: true
     },
     horizontal: {
+      type: null,
+      required: true
+    },
+    header: {
+      type: null,
+      required: true
+    },
+    size: {
       type: null,
       required: true
     }
