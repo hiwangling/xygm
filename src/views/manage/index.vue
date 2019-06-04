@@ -17,7 +17,7 @@
               <img :src="item.image_url" alt="" class="image">
             </div>
             <div class="manage-tag">
-              <el-tag v-for="(value,items,idx) in item.num" :key="idx" :class="items | getNum" style="margin-left:5px">{{ items | getNumtxt }}({{ value }})</el-tag>
+              <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;width:80px">{{ items | getNumtxt }}({{ value }})</el-tag>
             </div>
           </el-card>
         </router-link>

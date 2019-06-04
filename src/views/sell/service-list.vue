@@ -224,8 +224,8 @@ export default {
       // }
     },
     handleAvatarSuccess(res, file) {
-      this.image_url = process.env.VUE_APP_BASE + file.res.data
-      this.dataForm.image_url = file.res.data
+      this.image_url = process.env.VUE_APP_BASE + file.response.data
+      this.dataForm.image_url = file.response.data
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'

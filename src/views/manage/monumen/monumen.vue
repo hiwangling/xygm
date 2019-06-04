@@ -6,16 +6,19 @@
     <el-button type="primary" plain size="small" @click="addSmall">添加竖碑(小)</el-button>
     <el-button type="primary" plain size="small" @click="addhorizontal">添加横碑</el-button>
     <el-button type="primary" plain size="small" @click="rest">重置清空碑文</el-button>
-    <template v-if="flag">
-      <template v-for="(item,index) in vert">
-        <drag :key="index" :child="item" :top="item.top" :left="item.left" :header="item.header" :size="item.size" :horizontal="item.horizontal" />
+    <el-button type="primary" plain size="small" @click="print">打印</el-button>
+    <section ref="print">
+      <template v-if="flag">
+        <template v-for="(item,index) in vert">
+          <drag :key="index" :child="item" :top="item.top" :left="item.left" :header="item.header" :size="item.size" :horizontal="item.horizontal" />
+        </template>
       </template>
-    </template>
-    <template v-else>
-      <template v-for="(item,index) in hori">
-        <drag :key="index" :child="item" :top="item.top" :left="item.left" :header="item.header" :size="item.size" :horizontal="item.horizontal" />
+      <template v-else>
+        <template v-for="(item,index) in hori">
+          <drag :key="index" :child="item" :top="item.top" :left="item.left" :header="item.header" :size="item.size" :horizontal="item.horizontal" />
+        </template>
       </template>
-    </template>
+    </section>
     <!-- <p>大字：{{ fn.big }}</p>
     <p>小字：{{ fn.small }}</p> -->
   </div>
@@ -289,6 +292,9 @@ export default {
         top: 10
       }
       this.hori.push(horizontal)
+    },
+    print() {
+      this.$print(this.$refs.print)
     },
     rest() {
       this.vert = []
