@@ -19,6 +19,7 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 import permission from '@/directive/permission/index.js'
+import Print from '@/utils/print.js'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -31,7 +32,7 @@ import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
-
+Vue.use(Print)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
