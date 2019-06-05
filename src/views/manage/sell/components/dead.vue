@@ -73,8 +73,8 @@
         </div>
         <div class="el-divider el-divider--horizontal"><div class="el-divider__text is-left">墓主信息</div></div>
         <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" label-width="100px" style="margin-left:50px;">
-          <div v-for="(idx,item) in type_id" :key="idx" style="height:120px">
-            <el-form-item :label="'墓主(' + idx + ')'">
+          <div v-for="(idx,item) in Number(type_id)" :key="idx" style="height:120px">
+            <el-form-item :label="'墓主(' + item + ')'">
               <el-input v-model="dataForm[item].vcname" />
             </el-form-item>
             <el-form-item label="性别">
@@ -132,7 +132,7 @@ export default {
       index: 1,
       list: null,
       listLoading: true,
-      type_id: 2,
+      type_id: '2',
       dialogFormVisible: false,
       cemeteryType: null,
       dialogStatus: '',

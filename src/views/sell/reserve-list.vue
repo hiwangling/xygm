@@ -14,7 +14,7 @@
       <el-table-column align="center" label="开始时间" prop="ordainbegin" />
       <el-table-column align="center" label="到期时间" prop="ordainend" />
       <el-table-column align="center" label="到期时间" prop="order_state" width="120">
-        <template v-if="scope.row.guoqi_status" slot-scope="scope">
+        <template slot-scope="scope">
           <el-tag :type="scope.row.guoqi_status | or_status">
             {{ scope.row.guoqi_days }}
           </el-tag>

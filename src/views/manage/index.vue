@@ -7,7 +7,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
     <el-row :gutter="20" class="area">
-      <el-col v-for="(item, index) in list" :key="index" :span="4">
+      <el-col v-for="(item, index) in list" :key="index" :span="5">
         <router-link :to="'/manage/list/'+item.id" class="">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -17,7 +17,7 @@
               <img :src="item.image_url" alt="" class="image">
             </div>
             <div class="manage-tag">
-              <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;width:80px">{{ items | getNumtxt }}({{ value }})</el-tag>
+              <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;">{{ items | getNumtxt }}({{ value }})</el-tag>
             </div>
           </el-card>
         </router-link>
@@ -87,8 +87,8 @@ export default {
    min-height: 100px;
    }
 .image {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    /* height: 200px; */
     display: block;
   }
   .manage-tag{
