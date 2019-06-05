@@ -1,3 +1,4 @@
+//* *Wed Jun 05 2019 11:16:20 GMT+0800 (中国标准时间) */
 export default function checkdate(date) {
   var cn = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
   var arr = []

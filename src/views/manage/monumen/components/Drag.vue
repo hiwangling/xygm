@@ -4,10 +4,11 @@
     class="box"
     :contenteditable="true"
     :style="{
-      'top':top + 'px',
-      'left':left + 'px','width':horizontal ? 'auto' : '22px',
-      'border-top':header ? '3px solid #4a9ff9' : '0',
-      'font-size':size ? '20px' : '16px'
+      'top':child.p + 'px',
+      'left':child.l + 'px',
+      'width':child.h ? 'auto' : '22px',
+      'border-top':child.e ? '3px solid #4a9ff9' : '0',
+      'font-size':child.s ? '20px' : '16px'
     }"
     @input="changeTxt"
     @focus="lock=true"
@@ -50,31 +51,11 @@ export default {
     child: {
       type: Object,
       required: true
-    },
-    top: {
-      type: null,
-      required: true
-    },
-    left: {
-      type: null,
-      required: true
-    },
-    horizontal: {
-      type: null,
-      required: true
-    },
-    header: {
-      type: null,
-      required: true
-    },
-    size: {
-      type: null,
-      required: true
     }
   },
   data() {
     return {
-      innerText: this.child.txt,
+      innerText: this.child.t,
       lock: false
     }
   },
@@ -82,7 +63,7 @@ export default {
     child: {
       handler(newValue, oldValue) {
         if (!this.lock) {
-          this.innerText = this.child.txt
+          this.innerText = this.child.t
         }
       },
       deep: true
@@ -90,7 +71,7 @@ export default {
   },
   methods: {
     changeTxt: function(e) {
-      this.child.txt = this.$el.innerHTML
+      this.child.t = this.$el.innerHTML
     }
   }
 

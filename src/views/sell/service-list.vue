@@ -75,7 +75,7 @@
           <el-input v-model="operater_name" :disabled="flag ? true : false" />
         </el-form-item>
         <el-form-item label="上传图片">
-          <span style="color:red">只能上传image/jpeg文件，且不超过2M</span>
+          <span v-if="!flag" style="color:red">只能上传image/jpeg文件，且不超过2M</span>
           <el-upload
             class="avatar-uploader"
             :headers="headers"
