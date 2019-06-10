@@ -2,7 +2,8 @@ import { get_order_status } from '@/api/buy'
 const state = {
   cems: null,
   pay: '',
-  order: 0
+  order: 0,
+  cname: ''
 }
 
 const mutations = {
@@ -14,6 +15,9 @@ const mutations = {
   },
   ADD_INDEX: (state, order) => {
     state.order = parseInt(order)
+  },
+  ADD_CNAME: (state, cname) => {
+    state.cname = cname
   }
 }
 
@@ -23,6 +27,9 @@ const actions = {
   },
   changeOrders({ commit }, order) {
     commit('ADD_INDEX', order)
+  },
+  addCname({ commit }, cname) {
+    commit('ADD_CNAME', cname)
   },
   pay({ commit }, cid) {
     return new Promise((resolve, reject) => {

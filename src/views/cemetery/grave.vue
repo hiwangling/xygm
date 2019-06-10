@@ -4,16 +4,16 @@
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
       <el-select v-model="form_garen_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
-        <el-option v-for="item in cemetery.gardens" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in cemetery.areas" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in cemetery.a" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in cemetery.types" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in cemetery.t" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.style_id" placeholder="选择样式" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in cemetery.styles" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in cemetery.s" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="(value, item) in cemetery.usestatus" :key="item" :label="value" :value="item" />
@@ -144,10 +144,10 @@ export default {
       list: null,
       total: 0,
       cemetery: {
-        gardens: null,
-        areas: null,
-        styles: null,
-        types: null
+        g: null,
+        a: null,
+        s: null,
+        t: null
       },
       listLoading: true,
       downloadLoading: false,
@@ -195,7 +195,7 @@ export default {
     this.getList()
     get_gardens()
       .then(res => {
-        this.cemetery.gardens = res.data
+        this.cemetery.g = res.data
       })
     get_status()
       .then(res => {
@@ -203,11 +203,11 @@ export default {
       })
     get_styles()
       .then(res => {
-        this.cemetery.styles = res.data
+        this.cemetery.s = res.data
       })
     get_types()
       .then(res => {
-        this.cemetery.types = res.data
+        this.cemetery.t = res.data
       })
   },
   methods: {
@@ -254,7 +254,7 @@ export default {
       this.dataForm.classify_id = ''
       get_areas(data)
         .then(res => {
-          this.cemetery.areas = res.data
+          this.cemetery.a = res.data
         })
     },
     handleCreate() {

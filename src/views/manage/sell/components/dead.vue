@@ -8,10 +8,17 @@
       <el-table-column align="center" label="出生日期" prop="birth" />
       <el-table-column align="center" label="去世日期" prop="death" />
       <el-table-column align="center" label="安葬日期" prop="bury" />
-      <el-table-column align="center" label="状态" prop="sex" />
+      <el-table-column align="center" label="状态" prop="bury_status">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.bury_status | or_status">
+            {{ scope.row.bury_status == 0 ? '未安葬' : '已安葬' }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="220">
         <template slot-scope="scope">
-          <el-button type="warning" size="mini" @click="GoBury(scope.row)">安葬</el-button>
+          <el-button v-if="scope.row.bury_status == 0" type="warning" size="mini" @click="GoBury(scope.row)">安葬</el-button>
+          <el-button v-else type="info" size="mini" plain disabled>已安葬</el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-if="payStatus == 1" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -124,7 +131,7 @@
 <script>
 import { listType } from '@/api/type'
 import { vuexData } from '@/utils/mixin'
-import { adddead, listdead, deletedead, updatedead } from '@/api/dead'
+import { adddead, listdead, deletedead, updatedead, godead } from '@/api/dead'
 export default {
   mixins: [vuexData],
   data() {
@@ -237,7 +244,35 @@ export default {
         })
     },
     GoBury(row) {
-
+      const data = {
+        id: row.id,
+        bury: row.bury
+      }
+      this.$confirm('是否安葬?', '安葬操作', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        godead(data)
+          .then(res => {
+            this.$notify.success({
+              title: '成功',
+              message: '操作成功'
+            })
+            this.getList()
+          })
+          .catch(res => {
+            this.$notify.error({
+              title: '失败',
+              message: res.msg
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
     },
     createData() {
       const Creatdata = {

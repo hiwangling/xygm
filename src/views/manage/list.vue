@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.type_name" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search">查找</el-button>
@@ -19,11 +18,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog id="cemetery" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" @open="activeName = 'reserve'">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="预定" name="reserve"><reserve /></el-tab-pane>
-        <el-tab-pane label="购墓" name="sell"><sell /></el-tab-pane>
-        <el-tab-pane label="殡葬服务" name="service"><service /></el-tab-pane>
-        <el-tab-pane label="寄存" name="save"><save /></el-tab-pane>
-        <el-tab-pane label="碑文" name="monument"><monumental /></el-tab-pane>
+        <el-tab-pane v-for="(item,index) in tab" :key="index" :label="item.label" :name="item.name"><component :is="item.name" /></el-tab-pane>
       </el-tabs>
     </el-dialog>
   </div>
@@ -37,10 +32,13 @@ import Service from './service/service'
 import Sell from './sell/sell'
 import Save from './save/save'
 import Reserve from './reserve/reserve'
-import monumental from './monumen/monumen'
+import monument from './monumen/monumen'
+import lamp from './lamp/lamp'
+import swap from './swap/swap'
+import move from './move/move'
 export default {
   name: 'VueLists',
-  components: { Pagination, Service, Sell, Reserve, Save, monumental },
+  components: { Pagination, Service, Sell, Reserve, Save, monument, lamp, swap, move },
   mixins: [vuexData],
   data() {
     return {
@@ -58,6 +56,16 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
+      tab: [
+        { label: '预定', name: 'reserve' },
+        { label: '购墓', name: 'sell' },
+        { label: '殡葬服务', name: 'service' },
+        { label: '寄存', name: 'save' },
+        { label: '碑文', name: 'monument' },
+        { label: '点灯', name: 'lamp' },
+        { label: '换墓', name: 'swap' },
+        { label: '退迁', name: 'move' }
+      ],
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -99,6 +107,7 @@ export default {
       get_name(data)
         .then(res => {
           this.dialogStatus = res.data.name
+          this.addCname(res.data.name)
         })
       this.dialogFormVisible = true
     },

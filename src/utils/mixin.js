@@ -9,7 +9,8 @@ export const vuexData = {
     ...mapGetters([
       'cems',
       'order',
-      'payStatus'
+      'payStatus',
+      'cname'
     ])
   },
 
@@ -17,7 +18,8 @@ export const vuexData = {
     ...mapActions({
       addCemetery: 'cemetery/addCemetery',
       changeOrders: 'cemetery/changeOrders',
-      pay: 'cemetery/pay'
+      pay: 'cemetery/pay',
+      addCname: 'cemetery/addCname'
     })
   }
 }

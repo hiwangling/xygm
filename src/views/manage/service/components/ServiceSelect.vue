@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import { listService } from '@/api/service'
-import { getEditService, addservices, editservices } from '@/api/buy-service'
+// import { listService } from '@/api/service'
+import { getEditService, addservices, editservices, getServiceOne } from '@/api/buy-service'
 import { listlink } from '@/api/link'
 import { vuexData } from '@/utils/mixin'
 export default {
@@ -109,11 +109,13 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listService()
+      const parm = { service_type: 2 }
+      getServiceOne(parm)
         .then(res => {
-          this.list = res.data.data
+          this.list = res.data
+          console.log(res)
           this.listLoading = false
-          const items = res.data.data
+          const items = res.data
           this.list = items.map(v => {
             this.$set(v, 'edit', false)
             v.originalTitle = v.sellprice

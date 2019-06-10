@@ -8,13 +8,13 @@
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <!-- <el-table-column align="center" label="墓号" prop="cid" width="80" /> -->
-      <el-table-column align="center" label="预定人" prop="buyer_name" />
+      <el-table-column align="center" label="墓号" prop="cid" width="80" />
+      <el-table-column align="center" label="预定人" prop="buyer_name" width="100" />
       <el-table-column align="center" label="联系电话" prop="phone" />
       <el-table-column align="center" label="开始时间" prop="ordainbegin" />
       <el-table-column align="center" label="到期时间" prop="ordainend" />
-      <el-table-column align="center" label="到期时间" prop="order_state" width="120">
-        <template v-if="scope.row.guoqi_status" slot-scope="scope">
+      <el-table-column align="center" label="状态" prop="guoqi_days" width="120">
+        <template slot-scope="scope">
           <el-tag :type="scope.row.guoqi_status | or_status">
             {{ scope.row.guoqi_days }}
           </el-tag>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加寄存信息</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加点灯服务</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="姓名" prop="link_name" />
@@ -46,44 +46,28 @@
     </el-table>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
-        <el-form-item label="联系人" prop="linkman_id">
-          <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" style="width:150px">
-            <el-option
-              v-for="item in listlink"
-              :key="item.id"
-              :label="item.link_name"
-              :value="item.id"
-            />
-          </el-select>
+        <el-form-item label="墓穴名称">
+          <span class="tag">{{ cname }}</span>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item label="费用">
+          <span class="tag" style="color:red;">{{ dataForm.price }} 元</span>
+        </el-form-item>
+        <el-form-item label="购买人" prop="vcname">
+          <el-input v-model="dataForm.vcname" />
+        </el-form-item>
+        <el-form-item label="联系电话" prop="phone">
+          <el-input v-model="dataForm.phone" />
+        </el-form-item>
+        <el-form-item label="身份证" prop="sfz">
+          <el-input v-model="dataForm.sfz" />
+        </el-form-item>
+        <el-form-item label="购买时间">
           <el-date-picker
             v-model="dataForm.savebegindate"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="选择日期"
           />
-        </el-form-item>
-        <el-form-item label="结束时间">
-          <el-date-picker
-            v-model="dataForm.saveenddate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item label="寄存地点">
-          <el-select v-model="dataForm.saveareaaddr" clearable placeholder="请选择" style="width:150px">
-            <el-option
-              v-for="item in address"
-              :key="item.id"
-              :label="item.link_name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="寄存费用">
-          <el-input v-model="dataForm.saveprice" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -95,37 +79,29 @@
   </div>
 </template>
 <script>
-import { listlink } from '@/api/link'
-import { updateSave, createSave, listSave, deleteSave, PaySave } from '@/api/save'
+import { updateSave, createSave, listSave, deleteSave } from '@/api/save'
 import { vuexData } from '@/utils/mixin'
 export default {
   mixins: [vuexData],
   data() {
     return {
-      index: 3,
       list: null,
-      listlink: null,
       listLoading: true,
       dialogStatus: '',
       dataForm: {
         cid: '',
-        linkman_id: '',
-        savebegindate: '',
-        saveenddate: '',
-        saveareaaddr: '',
-        saveprice: ''
+        vcname: '',
+        phone: '',
+        price: '',
+        sfz: ''
       },
-      address: [{
-        id: '常青园',
-        link_name: '常青园'
-      }],
       dialogFormVisible: false,
       textMap: {
         update: '编辑',
         create: '创建'
       },
       rules: {
-        linkman_id: [{ required: true, message: '联系人不能为空', trigger: 'change' }]
+        vcname: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -158,16 +134,13 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.findlink()
     },
     resetForm() {
       this.dataForm = {
         cid: this.cems.id,
-        linkman_id: '',
-        savebegindate: '',
-        saveenddate: '',
-        saveareaaddr: '',
-        saveprice: ''
+        vcname: '',
+        phone: '',
+        price: '100'
       }
     },
     createData() {
@@ -199,20 +172,12 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.findlink()
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           updateSave(this.dataForm)
             .then((res) => {
-              // for (const v of this.list) {
-              //   if (v.id === res.data.id) {
-              //     const index = this.list.indexOf(v)
-              //     this.list.splice(index, 1, res.data)
-              //     break
-              //   }
-              // }
               this.getList()
               this.dialogFormVisible = false
               this.$notify.success({
@@ -244,72 +209,6 @@ export default {
             title: '失败',
             message: res.msg
           })
-        })
-    },
-    handlePay(row) {
-      this.$confirm('付款此订单后寄存信息将无法修改和删除, 是否继续?', '付款操作', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const data = { id: row.id }
-        PaySave(data)
-          .then(res => {
-            this.$notify.success({
-              title: '成功',
-              message: '付款服务成功'
-            })
-            this.getList()
-          })
-          .catch(res => {
-            this.$notify.error({
-              title: '失败',
-              message: res.msg
-            })
-          })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
-    },
-    handleGo(row) {
-      this.$confirm('确定取走?', '取走操作', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        row.save_status = 2
-        updateSave(row)
-          .then((res) => {
-            this.getList()
-            this.$notify.success({
-              title: '成功',
-              message: '已取走'
-            })
-          })
-          .catch(res => {
-            this.$notify.error({
-              title: '失败',
-              message: res
-            })
-          })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
-    },
-    findlink() {
-      const data = { cid: this.cems.id }
-      listlink(data)
-        .then(res => {
-          this.listlink = res.data
-        })
-        .catch(() => {
-          this.listlink = null
         })
     }
   }

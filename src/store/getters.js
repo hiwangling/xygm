@@ -15,7 +15,8 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   cems: state => state.cemetery.cems,
   order: state => state.cemetery.order,
-  payStatus: state => state.cemetery.pay
+  payStatus: state => state.cemetery.pay,
+  cname: state => state.cemetery.cname
 
 }
 export default getters
