@@ -2,7 +2,7 @@
   <el-dialog id="search" class="dialog" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" placeholder="请输入墓穴名称" style="width: 200px;" />
-      <el-select v-model="form_garen_id" placeholder="选择墓园" clearable class="filter-item" @change="getarea()">
+      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable class="filter-item">
@@ -17,7 +17,6 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" :default-sort="{prop: 'sort',order:'ascending'}" element-loading-text="正在查询中。。。" border fit highlight-current-row @current-change="handleCurrentChange">
-      <el-table-column align="center" type="index" width="50" />
       <el-table-column align="center" label="墓号" prop="vno" width="50" />
       <el-table-column align="center" label="名称" prop="cname" />
       <el-table-column align="center" label="墓园" prop="y_name" />
@@ -43,7 +42,6 @@ export default {
       total: 0,
       dialogStatus: '',
       garen_id: '',
-      form_garen_id: '',
       listLoading: true,
       dialogFormVisible: false,
       cemetery: {
@@ -58,10 +56,11 @@ export default {
         sort: 'add_time',
         order: 'desc',
         keyword: undefined,
+        y_id: '',
         q_id: '',
         type_id: '',
         style_id: '',
-        usestatus: ''
+        usestatus: 1
       }
     }
   },
@@ -106,7 +105,7 @@ export default {
     },
     getarea() {
       const data = {
-        pid: this.garen_id || this.form_garen_id
+        pid: this.garen_id || this.listQuery.y_id
       }
       this.listQuery.q_id = ''
       get_areas(data)

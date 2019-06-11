@@ -3,7 +3,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
-      <el-select v-model="form_garen_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
@@ -152,13 +152,13 @@ export default {
       listLoading: true,
       downloadLoading: false,
       garen_id: '',
-      form_garen_id: '',
       listQuery: {
         page: 1,
         limit: 20,
         sort: 'add_time',
         order: 'desc',
         keyword: undefined,
+        y_id: '',
         q_id: '',
         type_id: '',
         style_id: '',
@@ -248,7 +248,7 @@ export default {
     },
     getarea() {
       const data = {
-        pid: this.garen_id || this.form_garen_id
+        pid: this.garen_id || this.listQuery.y_id
       }
       this.listQuery.q_id = ''
       this.dataForm.classify_id = ''

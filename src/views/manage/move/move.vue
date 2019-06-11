@@ -8,27 +8,6 @@
       <el-table-column align="center" label="开始日期" prop="savebegindate" width="100" />
       <el-table-column align="center" label="结束日期" prop="saveenddate" width="100" />
       <el-table-column align="center" label="费用" prop="saveprice" width="70" />
-      <el-table-column align="center" label="寄存状态" prop="save_status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.save_status | or_status">
-            {{ scope.row.save_status == 1 ? '寄存中' : '已取走' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="付款状态" prop="order_state">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.order_state | or_status">
-            {{ scope.row.order_state == 1 ? '未付款' : '已付款' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="到期时间" prop="guoqi_status" width="120">
-        <template v-if="scope.row.guoqi_days" slot-scope="scope">
-          <el-tag :type="scope.row.guoqi_status | or_status">
-            {{ scope.row.guoqi_days }}
-          </el-tag>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="220">
         <template slot-scope="scope">
           <template v-if="scope.row.save_status == 1">
@@ -44,28 +23,21 @@
       </el-table-column>
     </el-table>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
-        <el-form-item label="原墓名">
+      <el-form ref="dataForm" :inline="false" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
+        <el-form-item label="墓名">
           <span class="tag">{{ cname }}</span>
         </el-form-item>
-        <el-form-item label="新墓名">
-          <span style="color:red">{{ dataForm.price }} 元</span>
+        <el-form-item label="操作" prop="vcname">
+          <el-radio v-model="radio" label="1">退墓</el-radio>
+          <el-radio v-model="radio" label="2">迁出</el-radio>
         </el-form-item>
-        <el-form-item label="购买人" prop="vcname">
-          <el-input v-model="dataForm.vcname" />
-        </el-form-item>
-        <el-form-item label="联系电话" prop="phone">
-          <el-input v-model="dataForm.phone" />
-        </el-form-item>
-        <el-form-item label="身份证" prop="sfz">
-          <el-input v-model="dataForm.sfz" />
-        </el-form-item>
-        <el-form-item label="购买时间">
-          <el-date-picker
-            v-model="dataForm.savebegindate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
+        <el-form-item label="备注" prop="phone">
+          <el-input
+            v-model="dataForm.vcname"
+            style="width:50%"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入内容"
           />
         </el-form-item>
       </el-form>
@@ -85,6 +57,7 @@ export default {
   data() {
     return {
       list: null,
+      radio: '1',
       listLoading: true,
       dialogStatus: '',
       dataForm: {

@@ -59,7 +59,7 @@ export default {
       tab: [
         { label: '预定', name: 'reserve' },
         { label: '购墓', name: 'sell' },
-        { label: '殡葬服务', name: 'service' },
+        { label: '服务', name: 'service' },
         { label: '寄存', name: 'save' },
         { label: '碑文', name: 'monument' },
         { label: '点灯', name: 'lamp' },
