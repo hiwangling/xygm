@@ -22,20 +22,14 @@
       </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="220">
         <template slot-scope="scope">
-          <template v-if="scope.row.order_status === 1">
-            <el-button type="warning" size="mini" @click="handlePay(scope.row)">付款</el-button>
-            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-          </template>
-          <template v-else>
-            <el-button type="info" size="mini" plain disabled>已完结</el-button>
-          </template>
+          <el-button v-if="scope.row.order_status == 1" type="warning" size="mini" @click="handlePay(scope.row)">付款</el-button>
+          <el-button v-else type="info" size="mini" plain disabled>已付款</el-button>
+          <el-button v-if="scope.row.order_status == 1" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.order_status == 1" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <Service-select ref="child" @CloseDialog="CloseDialog" />
-    </el-dialog>
+    <Service-select ref="child" @CloseDialog="CloseDialog" />
   </div>
 </template>
 <script>
@@ -52,13 +46,7 @@ export default {
       linkman_id: '',
       listlink: '',
       linkdata: null,
-      listLoading: false,
-      dialogStatus: '',
-      dialogFormVisible: false,
-      textMap: {
-        update: '编辑服务',
-        create: '创建服务'
-      }
+      listLoading: false
     }
   },
   watch: {
@@ -86,22 +74,13 @@ export default {
         })
     },
     handleCreate() {
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.child.restservice()
-      })
+      this.$refs.child.restservice()
     },
     handleUpdate(row) {
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.child.editservice(row.id)
-      })
+      this.$refs.child.editservice(row.id)
     },
     CloseDialog(val) {
       this.getList()
-      this.dialogFormVisible = val
     },
     handleDelete(row) {
       delservices(row)

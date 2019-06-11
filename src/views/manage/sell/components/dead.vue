@@ -20,7 +20,7 @@
           <el-button v-if="scope.row.bury_status == 0" type="warning" size="mini" @click="GoBury(scope.row)">安葬</el-button>
           <el-button v-else type="info" size="mini" plain disabled>已安葬</el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-if="payStatus == 1" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-if="scope.row.bury_status == 0" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

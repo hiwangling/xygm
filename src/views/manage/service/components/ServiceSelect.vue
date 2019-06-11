@@ -1,65 +1,82 @@
 <template>
-  <div>
-    <div class="filter-container" style="height:40px">
-      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="80px">
-        <el-form-item label="联系人" prop="linkman_id">
-          <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" style="width:150px" size="mini">
-            <el-option
-              v-for="item in listlink"
-              :key="item.id"
-              :label="item.link_name"
-              :value="item.id"
+  <el-dialog id="service" class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+    <div>
+      <div class="filter-container" style="padding-bottom:0">
+        <el-form ref="dataForm" :rules="rules" :inline="true" :model="dataForm" status-icon label-position="left" label-width="80px">
+          <el-form-item label="购买人" prop="linkman_id">
+            <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" style="width:140px" size="mini">
+              <el-option
+                v-for="item in listlink"
+                :key="item.id"
+                :label="item.link_name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="服务时间">
+            <el-date-picker
+              v-model="dataForm.servicedate"
+              style="width:140px!important"
+              size="mini"
+              type="date"
+              placeholder="选择日期"
             />
-          </el-select>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="el-divider el-divider--horizontal"><div class="el-divider__text is-left">服务项目</div></div>
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      border
-      :row-class-name="tableRow"
-      highlight-current-row
-      :data="list"
-      tooltip-effect="dark"
-      style="width: 100%;margin-bottom:10px"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" align="center" width="55" />
-      <el-table-column prop="service_name" align="center" label="服务名称" />
-      <el-table-column prop="sellprice" align="center" width="300" label="服务价格" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <template v-if="row.edit">
-            <el-input v-model="row.sellprice" class="edit-input" size="mini" style="width:100px" />
-            <el-button size="mini" type="success" @click="confirmEdit(row)">
-              确定
-            </el-button>
-            <el-button size="mini" type="warning" @click="cancelEdit(row)">
-              取消
-            </el-button>
+          </el-form-item>
+          <el-form-item label="墓主">
+            <el-checkbox-group v-model="dataForm.bury">
+              <el-checkbox label="墓主1" />
+              <el-checkbox label="墓主2" />
+            </el-checkbox-group>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="ele" />
+      <el-table
+        ref="multipleTable"
+        v-loading="listLoading"
+        border
+        :row-class-name="tableRow"
+        highlight-current-row
+        :data="list"
+        tooltip-effect="dark"
+        style="width: 100%;margin-bottom:10px"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" align="center" width="55" />
+        <el-table-column prop="service_name" align="center" label="服务名称" />
+        <el-table-column prop="sellprice" align="center" width="300" label="服务价格" show-overflow-tooltip>
+          <template slot-scope="{row}">
+            <template v-if="row.edit">
+              <el-input v-model="row.sellprice" class="edit-input" size="mini" style="width:100px" />
+              <el-button size="mini" type="success" @click="confirmEdit(row)">
+                确定
+              </el-button>
+              <el-button size="mini" type="warning" @click="cancelEdit(row)">
+                取消
+              </el-button>
+            </template>
+            <span v-else @click="row.edit=!row.edit">{{ row.sellprice }}</span>
           </template>
-          <span v-else @click="row.edit=!row.edit">{{ row.sellprice }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="el-divider el-divider--horizontal"><div class="el-divider__text is-left">已选项目</div></div>
-    <el-table
-      v-loading="listLoading"
-      :show-header="false"
-      show-summary
-      :data="sell"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column prop="service_name" width="200" />
-      <el-table-column prop="sellprice" />
-    </el-table>
-    <div slot="footer" class="dialog-footer service">
-      <el-button @click="CloseDialog">取消</el-button>
-      <el-button v-if="dialogStatus=='create'" type="primary" @click="sendData">确定</el-button>
-      <el-button v-else type="primary" @click="editData">确定</el-button>
+        </el-table-column>
+      </el-table>
+      <div class="el-divider el-divider--horizontal"><div class="el-divider__text is-left">已选项目</div></div>
+      <el-table
+        v-loading="listLoading"
+        :show-header="false"
+        show-summary
+        :data="sell"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column prop="service_name" width="200" />
+        <el-table-column prop="sellprice" />
+      </el-table>
+      <div slot="footer" class="dialog-footer service">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="sendData">确定</el-button>
+        <el-button v-else type="primary" @click="editData">确定</el-button>
+      </div>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -77,13 +94,21 @@ export default {
       sum_price: '',
       id: '',
       dataForm: {
-        linkman_id: ''
+        linkman_id: '',
+        servicedate: '',
+        bury: ['墓主1']
       },
-      dialogStatus: '',
+
       list: null,
       sell: null,
       listLoading: true,
       multipleSelection: [],
+      dialogStatus: '',
+      dialogFormVisible: false,
+      textMap: {
+        update: '编辑服务',
+        create: '创建服务'
+      },
       rules: {
         linkman_id: [{ required: true, message: '联系人不能为空', trigger: 'change' }]
       }
@@ -113,7 +138,6 @@ export default {
       getServiceOne(parm)
         .then(res => {
           this.list = res.data
-          console.log(res)
           this.listLoading = false
           const items = res.data
           this.list = items.map(v => {
@@ -142,6 +166,7 @@ export default {
     restservice() {
       this.dataForm.linkman_id = null
       this.dialogStatus = 'create'
+      this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs.multipleTable.clearSelection()
       })
@@ -154,6 +179,7 @@ export default {
       this.id = val
       const data = { id: val }
       this.dialogStatus = 'update'
+      this.dialogFormVisible = true
       getEditService(data)
         .then(res => {
           this.order_detail_ids = res.data.order_detail_ids
@@ -183,6 +209,7 @@ export default {
                 title: '成功',
                 message: '添加服务成功'
               })
+              this.dialogFormVisible = false
               this.CloseDialog()
             })
             .catch(res => {
@@ -244,10 +271,10 @@ export default {
 }
 </script>
 <style>
-.el-table .rows {
-height: 50px;
+   .el-table .rows {
+   height: 50px;
   }
-.service{
+   .service{
     text-align: right;
     height: 65px;
     line-height: 80px;

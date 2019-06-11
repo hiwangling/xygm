@@ -49,8 +49,8 @@
         </el-table-column>
         <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="130">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.resutlstatus === 1" type="danger" size="mini" @click="handleCreate(scope.row.id)">执行</el-button>
-            <el-button v-else type="primary" size="mini" @click="handleCat(scope.row.id)">查看</el-button>
+            <el-button v-if="scope.row.resutlstatus == 2 " type="primary" size="mini" @click="handleCat(scope.row.id)">查看</el-button>
+            <el-button v-else type="danger" size="mini" @click="handleCreate(scope.row.id)">执行</el-button>
           </template>
 
         </el-table-column>
