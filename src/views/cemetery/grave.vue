@@ -76,7 +76,7 @@
         <el-form-item label="墓园选择" prop="yid">
           <el-select v-model="garen_id" clearable placeholder="请选择" @change="getarea()">
             <el-option
-              v-for="item in cemetery.gardens"
+              v-for="item in cemetery.g"
               :key="item.id"
               :label="item.type_name"
               :value="item.id"
@@ -86,7 +86,7 @@
         <el-form-item label="墓区选择" prop="classify_id">
           <el-select v-model="dataForm.classify_id" clearable placeholder="请选择">
             <el-option
-              v-for="item in cemetery.areas"
+              v-for="item in cemetery.a"
               :key="item.id"
               :label="item.type_name"
               :value="item.id"
@@ -96,7 +96,7 @@
         <el-form-item label="类型选择" prop="type_id">
           <el-select v-model="dataForm.type_id" clearable placeholder="请选择">
             <el-option
-              v-for="item in cemetery.types"
+              v-for="item in cemetery.t"
               :key="item.id"
               :label="item.type_name"
               :value="item.id"
@@ -106,7 +106,7 @@
         <el-form-item label="样式选择" prop="style_id">
           <el-select v-model="dataForm.style_id" clearable placeholder="请选择">
             <el-option
-              v-for="item in cemetery.styles"
+              v-for="item in cemetery.s"
               :key="item.id"
               :label="item.type_name"
               :value="item.id"
@@ -295,7 +295,7 @@ export default {
       }
       get_areas(data)
         .then(res => {
-          this.cemetery.areas = res.data
+          this.cemetery.a = res.data
         })
       this.dataForm = Object.assign({}, row)
       this.dialogStatus = 'update'
