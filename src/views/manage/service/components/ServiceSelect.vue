@@ -67,6 +67,10 @@
         :data="sell"
         @selection-change="handleSelectionChange"
       >
+        <el-table-column
+          type="index"
+          width="50"
+        />
         <el-table-column prop="service_name" width="200" />
         <el-table-column prop="sellprice" />
       </el-table>

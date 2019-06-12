@@ -282,13 +282,7 @@ export default {
       const data = this.list.length > 0 ? this.dataFormEdit : Creatdata
       adddead(data)
         .then(res => {
-          if (this.list.length > 0) {
-            this.list.unshift(res.data)
-          } else {
-            res.data.forEach((v, k) => {
-              this.list.unshift(res.data[k])
-            })
-          }
+          this.getList()
           this.dialogFormVisible = false
           this.$notify.success({
             title: '成功',
