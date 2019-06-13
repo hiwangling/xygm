@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <buy />
-    <dead />
+    <buy @v="v" />
+    <dead @v="v" />
     <linkman />
   </div>
 </template>
@@ -17,7 +17,9 @@ export default {
     }
   },
   methods: {
-
+    v() {
+      this.$emit('v')
+    }
   }
 }
 </script>

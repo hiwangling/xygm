@@ -238,6 +238,7 @@ export default {
           })
           const index = this.list.indexOf(row)
           this.list.splice(index, 1)
+          this.$emit('v')
         })
         .catch(res => {
           this.$notify.error({
@@ -258,6 +259,7 @@ export default {
         pay(data)
           .then(res => {
             this.$store.dispatch('cemetery/pay', this.cems.id)
+            this.$emit('v')
             this.$notify.success({
               title: '成功',
               message: '付款成功'

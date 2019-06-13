@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button v-if="list ? list.length < 1 : ''" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息</el-button>
-      <el-button v-else type="info" plain disabled>墓穴已预定</el-button>
+      <el-button v-if="userstatus ===1 && list ? list.length < 1 : '' " class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息</el-button>
+      <el-button v-else type="info" plain disabled>墓穴已锁定</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="预定人" prop="buyer_name" />
@@ -61,6 +61,12 @@ import { listReserve, createReserve, updateReserve, deleteReserve } from '@/api/
 import { vuexData } from '@/utils/mixin'
 export default {
   mixins: [vuexData],
+  props: {
+    userstatus: {
+      type: null,
+      required: true
+    }
+  },
   data() {
     return {
       index: 0,
@@ -133,6 +139,7 @@ export default {
             .then(res => {
               // this.list.unshift(res.data)
               this.getList()
+              this.$emit('v')
               this.dialogFormVisible = false
               this.$notify.success({
                 title: '成功',
@@ -195,6 +202,7 @@ export default {
           })
           const index = this.list.indexOf(row)
           this.list.splice(index, 1)
+          this.$emit('v')
         })
         .catch(res => {
           this.$notify.error({
