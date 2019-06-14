@@ -44,7 +44,7 @@
       </el-table-column>
     </el-table>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
+      <el-form ref="dataForm" :inline="false" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
         <el-form-item label="原墓穴">
           <span class="tag">{{ cname }}</span>
         </el-form-item>
@@ -93,10 +93,6 @@ export default {
         sfz: ''
       },
       dialogFormVisible: false,
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         // linkman: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
       }
