@@ -51,22 +51,15 @@
         <el-form-item label="新墓穴">
           <el-input v-model="dataForm.name" prefix-icon="el-icon-search" @focus="ChangeCmes()" />
         </el-form-item>
-        <el-form-item label="购买人" prop="linkman">
-          <el-input v-model="dataForm.linkman" />
-        </el-form-item>
-        <el-form-item label="联系电话" prop="phone">
-          <el-input v-model="dataForm.phone" />
-        </el-form-item>
-        <el-form-item label="身份证" prop="sfz">
-          <el-input v-model="dataForm.sfz" />
-        </el-form-item>
-        <el-form-item label="购买时间">
-          <el-date-picker
-            v-model="dataForm.savebegindate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
-          />
+        <el-form-item label="联系人">
+          <el-select v-model="dataForm.linkman" clearable placeholder="请选择" style="width:140px">
+            <el-option
+              v-for="item in listlink"
+              :key="item.id"
+              :label="item.link_name"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -81,13 +74,14 @@
 <script>
 import SwapSearch from './components/search'
 import { updateSave, createSave, listSave, deleteSave } from '@/api/save'
-import { vuexData } from '@/utils/mixin'
+import { page, vuexData } from '@/utils/mixin'
 export default {
   components: { SwapSearch },
-  mixins: [vuexData],
+  mixins: [page, vuexData],
   data() {
     return {
       list: null,
+      index: 6,
       listLoading: true,
       dialogStatus: '',
       dataForm: {
@@ -104,11 +98,16 @@ export default {
         create: '创建'
       },
       rules: {
-        linkman: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
+        // linkman: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
       }
     }
   },
   watch: {
+    order(val) {
+      if (val === this.index) {
+        this.link()
+      }
+    },
     cems: {
       handler(val) {
         this.getList()

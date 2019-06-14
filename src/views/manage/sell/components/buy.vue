@@ -109,10 +109,6 @@ export default {
         relation: '',
         address: ''
       },
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         // linkman_id: [{ required: true, message: '联系人不能为空', trigger: 'change' }]
       }
@@ -251,7 +247,8 @@ export default {
       this.$confirm('付款此订单后购墓信息及墓主信息将无法再次修改, 是否继续?', '付款操作', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass: 'confirmTop'
       }).then(() => {
         const data = {
           cid: this.cems.id

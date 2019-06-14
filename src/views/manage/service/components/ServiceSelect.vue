@@ -3,7 +3,7 @@
     <div>
       <div class="filter-container" style="padding-bottom:0">
         <el-form ref="dataForm" :rules="rules" :inline="true" :model="dataForm" status-icon label-position="left" label-width="80px">
-          <el-form-item label="购买人" prop="linkman_id">
+          <el-form-item label="联系人" prop="linkman_id">
             <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" style="width:140px" size="mini">
               <el-option
                 v-for="item in listlink"
@@ -86,14 +86,12 @@
 <script>
 // import { listService } from '@/api/service'
 import { getEditService, addservices, editservices, getServiceOne } from '@/api/buy-service'
-import { listlink } from '@/api/link'
-import { vuexData } from '@/utils/mixin'
+import { page, vuexData } from '@/utils/mixin'
 export default {
-  mixins: [vuexData],
+  mixins: [page, vuexData],
   data() {
     return {
       bury: '',
-      listlink: '',
       order_detail_ids: null,
       sum_price: '',
       id: '',
@@ -177,7 +175,7 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.findlink()
+      this.link()
     },
     editservice(val) {
       this.id = val
@@ -196,7 +194,7 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.findlink()
+      this.link()
     },
     sendData() {
       const data = {
@@ -241,6 +239,7 @@ export default {
                 title: '成功',
                 message: '编辑服务成功'
               })
+              this.dialogFormVisible = false
               this.CloseDialog()
             })
             .catch(res => {
@@ -260,16 +259,6 @@ export default {
     },
     tableRow({ row, rowIndex }) {
       return 'rows'
-    },
-    findlink() {
-      const data = { cid: this.cems.id }
-      listlink(data)
-        .then(res => {
-          this.listlink = res.data
-        })
-        .catch(() => {
-          this.listlink = null
-        })
     }
   }
 }

@@ -154,10 +154,6 @@ export default {
         bury: ''
       },
       buryForm: null,
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         // vcname: [{ required: true, message: '墓主不能为空', trigger: 'blur' }]
       }
@@ -251,7 +247,8 @@ export default {
       this.$confirm('是否安葬?', '安葬操作', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass: 'confirmTop'
       }).then(() => {
         godead(data)
           .then(res => {

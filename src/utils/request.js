@@ -59,7 +59,8 @@ service.interceptors.response.use(
         MessageBox.confirm('登录已超时，可以取消以停留在此页面上，或重新登录!', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          customClass: 'confirmTop'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()

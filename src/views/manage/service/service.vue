@@ -105,7 +105,8 @@ export default {
       this.$confirm('付款此订单后服务信息将无法修改和删除, 是否继续?', '付款操作', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass: 'confirmTop'
       }).then(() => {
         payservices(row)
           .then(res => {

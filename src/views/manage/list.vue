@@ -18,7 +18,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog id="cemetery" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" @open="activeName = 'reserve'">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane v-for="(item,index) in tab" :key="index" :label="item.label" :name="item.name"><component :is="item.name" :userstatus="userstatus" @v="v" /></el-tab-pane>
+        <el-tab-pane v-for="(item,index) in tab" :key="index" :label="item.label" :name="item.name"><component :is="item.name" @v="v" /></el-tab-pane>
       </el-tabs>
     </el-dialog>
   </div>
@@ -44,7 +44,6 @@ export default {
     return {
       list: null,
       num: null,
-      userstatus: Number,
       total: 0,
       cid: '',
       activeName: 'reserve',
@@ -108,7 +107,6 @@ export default {
         .then(res => {
           this.dialogStatus = res.data.name
           this.addCname(res.data.name)
-          this.userstatus = Number(res.data.usestatus)
         })
       this.dialogFormVisible = true
     },

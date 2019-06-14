@@ -96,10 +96,6 @@ export default {
         sfz: ''
       },
       dialogFormVisible: false,
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         vcname: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
       }

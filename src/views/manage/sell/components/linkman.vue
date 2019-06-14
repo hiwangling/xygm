@@ -62,10 +62,6 @@ export default {
         relation: '',
         address: ''
       },
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         link_name: [{ required: true, message: '联系人姓名不能为空', trigger: 'blur' }]
       }

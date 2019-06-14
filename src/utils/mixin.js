@@ -1,8 +1,12 @@
 import { mapGetters, mapActions } from 'vuex'
+import { listlink } from '@/api/link'
 export const vuexData = {
   data() {
     return {
-      showFlag: true
+      textMap: {
+        update: '编辑',
+        create: '创建'
+      }
     }
   },
   computed: {
@@ -13,7 +17,6 @@ export const vuexData = {
       'cname'
     ])
   },
-
   methods: {
     ...mapActions({
       addCemetery: 'cemetery/addCemetery',
@@ -21,6 +24,26 @@ export const vuexData = {
       pay: 'cemetery/pay',
       addCname: 'cemetery/addCname'
     })
+  }
+}
+
+export const page = {
+  data() {
+    return {
+      listlink: null
+    }
+  },
+  methods: {
+    link() {
+      const data = { cid: this.cems.id }
+      listlink(data)
+        .then(res => {
+          this.listlink = res.data
+        })
+        .catch(() => {
+          this.listlink = null
+        })
+    }
   }
 }
 

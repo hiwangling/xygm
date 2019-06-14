@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button v-if="userstatus ===1 && list ? list.length < 1 : '' " class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息</el-button>
+      <el-button v-if="currentStatus === 1 && list ? list.length < 1 : '' " class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息</el-button>
       <el-button v-else type="info" plain disabled>墓穴已锁定</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
@@ -58,20 +58,16 @@
 </template>
 <script>
 import { listReserve, createReserve, updateReserve, deleteReserve } from '@/api/reserve'
+import { get_name } from '@/api/cemetery'
 import { vuexData } from '@/utils/mixin'
 export default {
   mixins: [vuexData],
-  props: {
-    userstatus: {
-      type: null,
-      required: true
-    }
-  },
   data() {
     return {
       index: 0,
       list: null,
       listLoading: true,
+      currentStatus: Number,
       dialogStatus: '',
       dataForm: {
         cid: '',
@@ -81,10 +77,6 @@ export default {
         phone: ''
       },
       dialogFormVisible: false,
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         buyer_name: [{ required: true, message: '预定人不能为空', trigger: 'blur' }],
         ordainbegin: [{ required: true, message: '请选择日期', trigger: 'change' }],
@@ -114,6 +106,7 @@ export default {
           this.list = []
           this.listLoading = false
         })
+      this.getStatus()
     },
     resetForm() {
       this.dataForm = {
@@ -123,6 +116,13 @@ export default {
         ordainend: '',
         phone: ''
       }
+    },
+    getStatus() {
+      const data = { cid: this.cems.id }
+      get_name(data)
+        .then(res => {
+          this.currentStatus = Number(res.data.usestatus)
+        })
     },
     handleCreate() {
       this.resetForm()
@@ -203,6 +203,7 @@ export default {
           const index = this.list.indexOf(row)
           this.list.splice(index, 1)
           this.$emit('v')
+          this.getStatus()
         })
         .catch(res => {
           this.$notify.error({
