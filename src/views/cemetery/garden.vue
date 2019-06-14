@@ -40,7 +40,6 @@
 <script>
 import { listGarden, createGarden, updateGarden, deleteGarden } from '@/api/garden'
 import Pagination from '@/components/Pagination'
-
 export default {
   name: 'VueGarden',
   components: { Pagination },

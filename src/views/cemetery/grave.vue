@@ -7,7 +7,7 @@
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in cemetery.a" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in area" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in cemetery.t" :key="item.id" :label="item.type_name" :value="item.id" />
@@ -16,7 +16,7 @@
         <el-option v-for="item in cemetery.s" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="(value, item) in cemetery.usestatus" :key="item" :label="value" :value="item" />
+        <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
       </el-select>
       <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /api/v1/cemetery/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
@@ -86,7 +86,7 @@
         <el-form-item label="墓区选择" prop="classify_id">
           <el-select v-model="dataForm.classify_id" clearable placeholder="请选择">
             <el-option
-              v-for="item in cemetery.a"
+              v-for="item in area"
               :key="item.id"
               :label="item.type_name"
               :value="item.id"
@@ -133,22 +133,19 @@
 </template>
 <script>
 import { listGrave, createGrave, updateGrave, deleteGrave } from '@/api/grave'
-import { get_gardens, get_areas, get_styles, get_types, get_status } from '@/api/cemetery'
+import { get_areas } from '@/api/cemetery'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
+import { page, vuexData } from '@/utils/mixin'
 export default {
   name: 'VueArea',
   components: { Pagination },
+  mixins: [page, vuexData],
   data() {
     return {
       list: null,
       total: 0,
-      cemetery: {
-        g: null,
-        a: null,
-        s: null,
-        t: null
-      },
+      area: null,
       listLoading: true,
       downloadLoading: false,
       garen_id: '',
@@ -179,10 +176,6 @@ export default {
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
       rules: {
         vno: [{ required: true, message: '墓号不能为空', trigger: 'blur' }],
         classify_id: [{ required: true, message: '墓区不能为空', trigger: 'blur' }]
@@ -193,22 +186,7 @@ export default {
   },
   created() {
     this.getList()
-    get_gardens()
-      .then(res => {
-        this.cemetery.g = res.data
-      })
-    get_status()
-      .then(res => {
-        this.cemetery.usestatus = res.data
-      })
-    get_styles()
-      .then(res => {
-        this.cemetery.s = res.data
-      })
-    get_types()
-      .then(res => {
-        this.cemetery.t = res.data
-      })
+    this.inquery()
   },
   methods: {
     getList() {
@@ -254,7 +232,7 @@ export default {
       this.dataForm.classify_id = ''
       get_areas(data)
         .then(res => {
-          this.cemetery.a = res.data
+          this.area = res.data
         })
     },
     handleCreate() {
@@ -295,7 +273,7 @@ export default {
       }
       get_areas(data)
         .then(res => {
-          this.cemetery.a = res.data
+          this.area = res.data
         })
       this.dataForm = Object.assign({}, row)
       this.dialogStatus = 'update'

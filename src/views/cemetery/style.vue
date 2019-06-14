@@ -41,7 +41,6 @@
 <script>
 import { listStyle, createStyle, updateStyle, deleteStyle } from '@/api/style'
 import Pagination from '@/components/Pagination'
-
 export default {
   name: 'VueStyle',
   components: { Pagination },

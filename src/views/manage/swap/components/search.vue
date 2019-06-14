@@ -29,13 +29,13 @@
   </el-dialog>
 </template>
 <script>
-import { vuexData } from '@/utils/mixin'
+import { page, vuexData } from '@/utils/mixin'
 import Pagination from '@/components/Pagination'
 import { listGrave } from '@/api/grave'
-import { get_gardens, get_areas, get_styles, get_types, get_status } from '@/api/cemetery'
+import { get_areas } from '@/api/cemetery'
 export default {
   components: { Pagination },
-  mixins: [vuexData],
+  mixins: [page, vuexData],
   data() {
     return {
       list: null,
@@ -44,12 +44,6 @@ export default {
       garen_id: '',
       listLoading: true,
       dialogFormVisible: false,
-      cemetery: {
-        g: null,
-        a: null,
-        s: null,
-        t: null
-      },
       listQuery: {
         page: 1,
         limit: 20,
@@ -66,22 +60,6 @@ export default {
   },
   created() {
     this.getList()
-    get_gardens()
-      .then(res => {
-        this.cemetery.g = res.data
-      })
-    get_status()
-      .then(res => {
-        this.cemetery.u = res.data
-      })
-    get_styles()
-      .then(res => {
-        this.cemetery.s = res.data
-      })
-    get_types()
-      .then(res => {
-        this.cemetery.t = res.data
-      })
   },
   methods: {
     getList() {
@@ -116,10 +94,13 @@ export default {
     show() {
       this.dialogStatus = '墓穴查询'
       this.dialogFormVisible = true
+      this.inquery()
     },
     handleCurrentChange(val) {
-      this.dialogFormVisible = false
-      this.$emit('getname', val)
+      if (val != null) {
+        this.dialogFormVisible = false
+        this.$emit('getname', val)
+      }
     }
   }
 }

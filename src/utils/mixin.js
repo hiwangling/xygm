@@ -1,5 +1,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import { listlink } from '@/api/link'
+import { get_gardens, get_styles, get_types, get_status } from '@/api/cemetery'
 export const vuexData = {
   data() {
     return {
@@ -30,7 +31,14 @@ export const vuexData = {
 export const page = {
   data() {
     return {
-      listlink: null
+      listlink: null,
+      cemetery: {
+        g: null,
+        a: null,
+        s: null,
+        t: null,
+        u: null
+      }
     }
   },
   methods: {
@@ -42,6 +50,24 @@ export const page = {
         })
         .catch(() => {
           this.listlink = null
+        })
+    },
+    inquery() {
+      get_gardens()
+        .then(res => {
+          this.cemetery.g = res.data
+        })
+      get_status()
+        .then(res => {
+          this.cemetery.u = res.data
+        })
+      get_styles()
+        .then(res => {
+          this.cemetery.s = res.data
+        })
+      get_types()
+        .then(res => {
+          this.cemetery.t = res.data
         })
     }
   }
