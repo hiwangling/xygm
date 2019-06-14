@@ -10,7 +10,7 @@
       <el-table-column align="center" label="安葬日期" prop="bury" />
       <el-table-column align="center" label="状态" prop="bury_status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.bury_status | or_status">
+          <el-tag :type="scope.row.bury_status | bury_status">
             {{ scope.row.bury_status == 0 ? '未安葬' : '已安葬' }}
           </el-tag>
         </template>

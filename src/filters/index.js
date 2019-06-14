@@ -112,3 +112,10 @@ export function or_status(status) {
   }
   return statusMap[status]
 }
+export function bury_status(status) {
+  const statusMap = {
+    0: 'danger',
+    1: 'info'
+  }
+  return statusMap[status]
+}
