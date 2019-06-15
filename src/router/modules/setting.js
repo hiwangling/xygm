@@ -2,17 +2,17 @@
 
 import Layout from '@/layout'
 
-const memberRouter = {
-  path: '/member',
+const settingRouter = {
+  path: '/setting',
   component: Layout,
   alwaysShow: true,
-  name: 'VueMember',
+  name: 'VueSetting',
   meta: { title: '系统设置', icon: 'peoples' },
   children: [
     {
       path: 'group',
       name: 'VueGroup',
-      component: () => import('@/views/member/group'),
+      component: () => import('@/views/setting/group'),
       meta: {
         title: '部门管理',
         noCache: true,
@@ -22,7 +22,7 @@ const memberRouter = {
     {
       path: 'manager',
       name: 'VueManager',
-      component: () => import('@/views/member/manager'),
+      component: () => import('@/views/setting/manager'),
       meta: {
         title: '员工管理',
         noCache: true,
@@ -32,7 +32,7 @@ const memberRouter = {
     {
       path: 'password',
       name: 'ChangePassword',
-      component: () => import('@/views/member/password'),
+      component: () => import('@/views/setting/password'),
       meta: {
         title: '修改密码',
         noCache: true
@@ -40,4 +40,4 @@ const memberRouter = {
     }
   ]
 }
-export default memberRouter
+export default settingRouter

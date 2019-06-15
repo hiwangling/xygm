@@ -284,7 +284,7 @@ export default {
           this.dialogFormVisible = false
           this.$notify.success({
             title: '成功',
-            message: '添加购墓信息成功'
+            message: '添加墓主信息成功'
           })
         })
         .catch(res => {

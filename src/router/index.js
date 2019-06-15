@@ -5,10 +5,10 @@ Vue.use(Router)
 
 import Layout from '@/layout'
 import cemeteryRouter from './modules/cemetery'
-import memberRouter from './modules/member'
+import settingRouter from './modules/setting'
 import serviceRouter from './modules/service'
 import manageRouter from './modules/manage'
-import sellRouter from './modules/sell'
+import orderRouter from './modules/order'
 
 export const constantRoutes = [
   {
@@ -34,12 +34,12 @@ export const constantRoutes = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error-page/404'),
+    component: () => import('@/views/redirect/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/views/error-page/401'),
+    component: () => import('@/views/redirect/401'),
     hidden: true
   },
   {
@@ -59,10 +59,10 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   manageRouter,
-  sellRouter,
+  orderRouter,
   cemeteryRouter,
   serviceRouter,
-  memberRouter,
+  settingRouter,
   { path: '*', redirect: '/404', hidden: true }
 
 ]

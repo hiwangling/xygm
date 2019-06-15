@@ -217,7 +217,8 @@ export default {
         })
     },
     getname(val) {
-      this.dataForm.name = val.y_name + val.cemetery_classify.type_name
+      console.log(val)
+      this.dataForm.name = val.y_name + val.cemetery_classify.type_name + val.vno + val.cname
     }
   }
 }

@@ -2,17 +2,17 @@
 
 import Layout from '@/layout'
 
-const sellRouter = {
-  path: '/sell',
+const orderRouter = {
+  path: '/order',
   component: Layout,
   alwaysShow: true,
-  name: 'vueSell',
+  name: 'vueOrder',
   meta: { title: '订单管理', icon: 'shopping' },
   children: [
     {
       path: 'reserve-list',
       name: 'VueReserveList',
-      component: () => import('@/views/sell/reserve-list'),
+      component: () => import('@/views/order/reserve-list'),
       meta: {
         title: '预定管理',
         noCache: true,
@@ -21,7 +21,7 @@ const sellRouter = {
     }, {
       path: 'save-list',
       name: 'VueSaveList',
-      component: () => import('@/views/sell/save-list'),
+      component: () => import('@/views/order/save-list'),
       meta: {
         title: '寄存管理',
         noCache: true,
@@ -31,13 +31,23 @@ const sellRouter = {
     {
       path: 'service-list',
       name: 'VueServiceList',
-      component: () => import('@/views/sell/service-list'),
+      component: () => import('@/views/order/service-list'),
       meta: {
         title: '服务管理',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'cemetery-list',
+      name: 'VueCemeteryList',
+      component: () => import('@/views/order/cemetery-list'),
+      meta: {
+        title: '公墓管理',
         noCache: true,
         perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }
     }
   ]
 }
-export default sellRouter
+export default orderRouter
