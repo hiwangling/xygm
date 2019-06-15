@@ -49,7 +49,7 @@ export default {
       dialogFormVisible: false,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         sort: 'add_time',
         order: 'desc',
         keyword: undefined,

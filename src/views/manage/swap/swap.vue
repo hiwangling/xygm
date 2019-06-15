@@ -43,16 +43,22 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+    <el-dialog id="swap" class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="false" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
         <el-form-item label="原墓穴">
-          <span class="tag">{{ cname }}</span>
+          <span class="tag">{{ cname }}   /  {{ real_price }} 元</span>
         </el-form-item>
         <el-form-item label="新墓穴">
-          <el-input v-model="dataForm.name" prefix-icon="el-icon-search" @focus="ChangeCmes()" />
+          <span>{{ dataForm.name }}</span>
+          <el-button type="primary" icon="el-icon-search" plain size="mini" @click="ChangeCmes()" />
+          <el-button type="danger" icon="el-icon-delete" plain size="mini" @click="dataForm.name = ''" />
+          <!-- <el-input v-model="dataForm.name" prefix-icon="el-icon-search" @focus="ChangeCmes()" /> -->
+        </el-form-item>
+        <el-form-item label="补差价">
+          <el-input v-model="dataForm.price" class="cprice" />
         </el-form-item>
         <el-form-item label="联系人">
-          <el-select v-model="dataForm.linkman" clearable placeholder="请选择" style="width:140px">
+          <el-select v-model="dataForm.linkman" clearable placeholder="请选择">
             <el-option
               v-for="item in listlink"
               :key="item.id"
@@ -73,7 +79,8 @@
 </template>
 <script>
 import SwapSearch from './components/search'
-import { updateSave, createSave, listSave, deleteSave } from '@/api/save'
+import { updateSave, createSave, deleteSave } from '@/api/save'
+import { listbuy } from '@/api/buy'
 import { page, vuexData } from '@/utils/mixin'
 export default {
   components: { SwapSearch },
@@ -84,6 +91,7 @@ export default {
       index: 6,
       listLoading: true,
       dialogStatus: '',
+      real_price: '',
       dataForm: {
         cid: '',
         name: '',
@@ -114,35 +122,32 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+
       const data = { cid: this.cems.id }
-      listSave(data)
+      listbuy(data)
         .then(res => {
-          this.list = res.data.data
           this.listLoading = false
-        })
-        .catch(() => {
-          this.list = []
-          this.listLoading = false
+          this.real_price = res.data[0].real_price
         })
     },
     handleCreate() {
-      this.resetForm()
+      // this.resetForm()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    resetForm() {
-      this.dataForm = {
-        cid: this.cems.id,
-        name: '',
-        linkman: '',
-        phone: '',
-        price: '',
-        sfz: ''
-      }
-    },
+    // resetForm() {
+    //   this.dataForm = {
+    //     cid: this.cems.id,
+    //     name: '',
+    //     linkman: '',
+    //     phone: '',
+    //     price: '',
+    //     sfz: ''
+    //   }
+    // },
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
@@ -216,11 +221,21 @@ export default {
           })
         })
     },
-    getname(val) {
-      console.log(val)
-      this.dataForm.name = val.y_name + val.cemetery_classify.type_name + val.vno + val.cname
+    getname(v) {
+      this.dataForm.name = v.y_name + v.cemetery_classify.type_name + v.vno + v.cname + ' / ' + v.sellprice + ' 元'
     }
   }
 }
 </script>
+<style>
+/* #swap .el-dialog .el-input--medium .el-input__inner{
+  width: 300px;
+} */
+/* .swap_search{
+  width: 50px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+} */
+</style>
 
