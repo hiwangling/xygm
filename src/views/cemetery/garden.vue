@@ -51,13 +51,13 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        keyword: undefined,
+        keyword: '',
         sort: 'add_time',
         order: 'desc'
       },
       dataForm: {
-        id: undefined,
-        type_name: undefined
+        id: '',
+        type_name: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',

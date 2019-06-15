@@ -46,9 +46,9 @@ export default {
       list: null,
       listLoading: true,
       dataForm: {
-        id: undefined,
-        type_name: undefined,
-        hrm: undefined
+        id: '',
+        type_name: '',
+        hrm: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -81,12 +81,11 @@ export default {
     },
     resetForm() {
       this.dataForm = {
-        id: undefined,
-        type_name: undefined,
-        hrm: undefined
+        id: '',
+        type_name: '',
+        hrm: ''
       }
     },
-
     handleCreate() {
       this.resetForm()
       this.dialogStatus = 'create'

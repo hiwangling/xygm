@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.type_name" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓区名称" />
@@ -10,7 +9,6 @@
       <el-button v-permission="['GET /api/v1/cemetery_classify/a_list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /api/v1/cemetery_classify/a_add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
-
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" :default-sort="{prop: 'sort',order:'ascending'}" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="排序" prop="sort" width="200">
@@ -110,17 +108,17 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        keyword: undefined,
+        keyword: '',
         sort: 'add_time',
         order: 'desc'
       },
       dataForm: {
-        id: undefined,
-        pid: undefined,
+        id: '',
+        pid: '',
         image_url: '',
-        type_name: undefined,
-        sort: undefined,
-        parent_id: undefined
+        type_name: '',
+        sort: '',
+        parent_id: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -206,11 +204,11 @@ export default {
     },
     resetForm() {
       this.dataForm = {
-        id: undefined,
-        type_name: undefined,
+        id: '',
+        type_name: '',
         image_url: '',
-        sort: undefined,
-        parent_id: undefined
+        sort: '',
+        parent_id: ''
       }
     },
     handleCreate() {

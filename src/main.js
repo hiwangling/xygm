@@ -13,31 +13,20 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import './icons' // icon
-import './permission' // permission control
-import './utils/error-log' // error log
+import './icons'
+import './permission'
+import './utils/error-log'
 
-import * as filters from './filters' // global filters
+import * as filters from './filters'
 import permission from '@/directive/permission/index.js'
 import Print from '@/utils/print.js'
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online! ! !
- */
-import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+
 Vue.use(Print)
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium' // set element-ui default size
+  size: Cookies.get('size') || 'medium'
 })
 Vue.directive('permission', permission)
-// register global utility filters
+
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
