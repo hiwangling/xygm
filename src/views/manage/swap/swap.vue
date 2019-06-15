@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog id="swap" class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="false" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
         <el-form-item label="原墓穴">
           <span class="tag">{{ cname }}   /  {{ real_price }} 元</span>
@@ -228,14 +228,5 @@ export default {
 }
 </script>
 <style>
-/* #swap .el-dialog .el-input--medium .el-input__inner{
-  width: 300px;
-} */
-/* .swap_search{
-  width: 50px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-} */
 </style>
 
