@@ -46,12 +46,12 @@
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="false" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
         <el-form-item label="原墓穴">
-          <span class="tag">{{ cname }}   /  {{ real_price }} 元</span>
+          <span style="color:#1890ff">{{ cname }}   /  {{ real_price }} 元</span>
         </el-form-item>
         <el-form-item label="新墓穴">
           <span>{{ dataForm.name }}</span>
           <el-button type="primary" icon="el-icon-search" plain size="mini" @click="ChangeCmes()" />
-          <el-button type="danger" icon="el-icon-delete" plain size="mini" @click="dataForm.name = ''" />
+          <el-button v-if="dataForm.name" type="danger" icon="el-icon-delete" plain size="mini" @click="dataForm.name = ''" />
           <!-- <el-input v-model="dataForm.name" prefix-icon="el-icon-search" @focus="ChangeCmes()" /> -->
         </el-form-item>
         <el-form-item label="补差价">
@@ -127,7 +127,9 @@ export default {
       listbuy(data)
         .then(res => {
           this.listLoading = false
-          this.real_price = res.data[0].real_price
+          if (res.data.length > 0) {
+            this.real_price = res.data[0].real_price
+          }
         })
     },
     handleCreate() {

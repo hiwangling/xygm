@@ -71,7 +71,7 @@
             placeholder="选择日期"
           />
         </el-form-item>
-        <el-form-item v-if="flag" label="执行人">
+        <el-form-item v-if="flag" label="执行人员">
           <el-input v-model="operater_name" :disabled="flag ? true : false" />
         </el-form-item>
         <el-form-item label="上传图片">
@@ -102,7 +102,6 @@
 </template>
 <script>
 import { AllCemetery, AllCemeteryCid, ExecuteService, CatService } from '@/api/to-service'
-// import { get_name } from '@/api/cemetery'
 import { uploadPath } from '@/api/upload'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
@@ -210,6 +209,7 @@ export default {
     handleCreate(id) {
       this.flag = false
       this.dialogStatus2 = 'create'
+      this.image_url = ''
       this.dataForm.execdate = ''
       this.dataForm.execnote = ''
       this.dialogFormVisible_ = true

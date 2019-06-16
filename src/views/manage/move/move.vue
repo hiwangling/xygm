@@ -27,7 +27,7 @@
         <el-form-item label="墓名">
           <span class="tag">{{ cname }}</span>
         </el-form-item>
-        <el-form-item label="操作" prop="vcname">
+        <el-form-item label="操作">
           <el-radio v-model="radio" label="1">退墓</el-radio>
           <el-radio v-model="radio" label="2">迁出</el-radio>
         </el-form-item>
@@ -69,7 +69,7 @@ export default {
       },
       dialogFormVisible: false,
       rules: {
-        vcname: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
+        // vcname: [{ required: true, message: '购买人不能为空', trigger: 'blur' }]
       }
     }
   },
