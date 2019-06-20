@@ -24,9 +24,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <el-form ref="dataForm" :inline="true" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="margin-left:50px;">
-        <el-form-item label="联系人" prop="linkman_id" :rules="[dataForm.link_name ? true : { required: true, message: '联系人不能为空', trigger: 'change' }]">
+    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="1vh" append-to-body>
+      <el-form ref="dataForm" :inline="true" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px">
+        <!-- <el-form-item label="联系人" prop="linkman_id" :rules="[dataForm.link_name ? true : { required: true, message: '联系人不能为空', trigger: 'change' }]">
           <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" :disabled="dataForm.link_name ? true : false" @change="changelink">
             <el-option
               v-for="item in listlink"
@@ -35,21 +35,21 @@
               :value="item.id"
             />
           </el-select>
+        </el-form-item> -->
+        <el-form-item label="联系人" prop="link_name">
+          <el-input v-model="dataForm.link_name" />
         </el-form-item>
-        <el-form-item label="联系人" prop="link_name" :rules="[dataForm.linkman_id ? true : { required: true, message: '联系人不能为空', trigger: 'blur' }]">
-          <el-input v-model="dataForm.link_name" :disabled="rule" />
-        </el-form-item>
-        <el-form-item label="联系人电话">
-          <el-input v-model="dataForm.phone" :disabled="rule" />
+        <el-form-item label="电话">
+          <el-input v-model="dataForm.phone" />
         </el-form-item>
         <el-form-item label="身份证">
-          <el-input v-model="dataForm.card_no" :disabled="rule" />
+          <el-input v-model="dataForm.card_no" />
         </el-form-item>
         <el-form-item label="关系">
-          <el-input v-model="dataForm.relation" :disabled="rule" />
+          <el-input v-model="dataForm.relation" />
         </el-form-item>
         <el-form-item label="住址">
-          <el-input v-model="dataForm.address" :disabled="rule" />
+          <el-input v-model="dataForm.address" />
         </el-form-item>
         <el-form-item label="销售金额">
           <el-input v-model="cems.sellprice" :disabled="true" />
@@ -73,8 +73,18 @@
         <el-form-item label="实收金额">
           <el-input v-model="dataForm.real_price" />
         </el-form-item>
+        <el-form-item label="备注" prop="vcnote">
+          <el-input
+            v-model="dataForm.vcnote"
+            style="width:80%"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+          />
+        </el-form-item>
       </el-form>
-
+      <div class="ele" />
+      <Vue-form />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
@@ -85,14 +95,16 @@
 </template>
 <script>
 import { addbuy, listbuy, editbuy, deletebuy, pay } from '@/api/buy'
-import { listlink } from '@/api/link'
 import { vuexData } from '@/utils/mixin'
+import VueForm from './form'
 export default {
+  components: { VueForm },
   mixins: [vuexData],
   data() {
     return {
       index: 1,
       list: null,
+      type_id: '2',
       listlink: null,
       listLoading: true,
       dialogFormVisible: false,
@@ -107,7 +119,8 @@ export default {
         phone: '',
         card_no: '',
         relation: '',
-        address: ''
+        address: '',
+        vcnote: ''
       },
       rules: {
         // linkman_id: [{ required: true, message: '联系人不能为空', trigger: 'change' }]
@@ -115,14 +128,15 @@ export default {
     }
   },
   computed: {
-    rule() {
-      return !!this.dataForm.linkman_id
-    }
+    // rule() {
+    //   return !!this.dataForm.linkman_id
+    // }
   },
   watch: {
     cems: {
       handler(val) {
         this.getList()
+        // this.SeleteCeme(this.type_id)
       },
       immediate: true
     }
@@ -153,7 +167,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
       this.resetForm()
-      this.listlink_()
+      // this.listlink_()
     },
     createData() {
       this.$refs['dataForm'].validate(valid => {
@@ -196,7 +210,7 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.listlink_()
+      // this.listlink_()
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
@@ -286,21 +300,22 @@ export default {
         card_no: '',
         phone: '',
         relation: '',
-        address: ''
+        address: '',
+        vcnote: ''
       }
-    },
-    listlink_() {
-      const data = {
-        cid: this.cems.id
-      }
-      listlink(data)
-        .then(res => {
-          this.listlink = res.data
-        })
-        .catch(() => {
-          this.listlink = null
-        })
     }
+    // listlink_() {
+    //   const data = {
+    //     cid: this.cems.id
+    //   }
+    //   listlink(data)
+    //     .then(res => {
+    //       this.listlink = res.data
+    //     })
+    //     .catch(() => {
+    //       this.listlink = null
+    //     })
+    // }
   }
 }
 </script>

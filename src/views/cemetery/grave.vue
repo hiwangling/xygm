@@ -3,7 +3,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
-      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+      <el-select v-model="listQuery.garden_id " placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
@@ -52,7 +52,7 @@
     <!-- 添加或修改对话框 -->
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :inline="true" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="margin-left:50px;">
-        <el-form-item label="墓号" prop="vno">
+        <!-- <el-form-item label="墓号" prop="vno">
           <el-input v-model="dataForm.vno" />
         </el-form-item>
         <el-form-item label="名称" prop="cname">
@@ -63,18 +63,10 @@
         </el-form-item>
         <el-form-item label="朝向" prop="orientation">
           <el-input v-model="dataForm.orientation" />
-        </el-form-item>
-        <el-form-item label="行" prop="ix">
-          <el-input v-model="dataForm.ix" />
-        </el-form-item>
-        <el-form-item label="列" prop="iy">
-          <el-input v-model="dataForm.iy" />
-        </el-form-item>
-        <el-form-item label="价格" prop="sellprice">
-          <el-input v-model="dataForm.sellprice" />
-        </el-form-item>
-        <el-form-item label="墓园选择" prop="yid">
-          <el-select v-model="garen_id" clearable placeholder="请选择" @change="getarea()">
+        </el-form-item> -->
+
+        <el-form-item label="墓园选择" prop="garen_id">
+          <el-select v-model="dataForm.garen_id" clearable placeholder="请选择" @change="getarea()">
             <el-option
               v-for="item in cemetery.g"
               :key="item.id"
@@ -113,14 +105,23 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createdate">
+        <el-form-item label="行" prop="ix">
+          <el-input v-model="dataForm.ix" />
+        </el-form-item>
+        <el-form-item label="排" prop="iy">
+          <el-input v-model="dataForm.iy" placeholder="请输入内容" />
+        </el-form-item>
+        <el-form-item label="价格" prop="sellprice">
+          <el-input v-model="dataForm.sellprice" />
+        </el-form-item>
+        <!-- <el-form-item label="创建时间" prop="createdate">
           <el-date-picker
             v-model="dataForm.createdate"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="选择日期"
           />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -154,8 +155,8 @@ export default {
         limit: 10,
         sort: 'add_time',
         order: 'desc',
-        keyword: undefined,
-        y_id: '',
+        keyword: '',
+        garden_id: '',
         q_id: '',
         type_id: '',
         style_id: '',
@@ -177,7 +178,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
-        vno: [{ required: true, message: '墓号不能为空', trigger: 'blur' }],
+        // vno: [{ required: true, message: '墓号不能为空', trigger: 'blur' }],
         classify_id: [{ required: true, message: '墓区不能为空', trigger: 'blur' }]
       }
     }
@@ -194,7 +195,7 @@ export default {
       listGrave(this.listQuery)
         .then(res => {
           this.list = res.data.data
-          this.garen_id = res.data.data.y_id
+          this.garen_id = res.data.data.garden_id
           this.total = res.data.total || 0
           this.listLoading = false
         })
@@ -226,7 +227,7 @@ export default {
     },
     getarea() {
       const data = {
-        pid: this.garen_id || this.listQuery.y_id
+        pid: this.garen_id || this.listQuery.garden_id
       }
       this.listQuery.q_id = ''
       this.dataForm.classify_id = ''
@@ -267,7 +268,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.garen_id = row.y_id
+      this.garen_id = row.garden_id
       const data = {
         pid: this.garen_id
       }
@@ -336,7 +337,7 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
+          filename: '公墓订单'
         })
         this.downloadLoading = false
       })

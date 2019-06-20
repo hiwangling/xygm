@@ -2,166 +2,104 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓主或墓号" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
+      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+        <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in area" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in cemetery.t" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-select v-model="listQuery.style_id" placeholder="选择样式" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in cemetery.s" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-date-picker
+        v-model="listQuery.begindate"
+        class="filter-item"
+        type="date"
+        style="width: 200px"
+        placeholder="开始日期"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
+      />
+      <el-date-picker
+        v-model="listQuery.enddate"
+        type="date"
+        style="width: 200px"
+        class="filter-item"
+        placeholder="结束日期"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
+      />
+      <!-- <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
+      </el-select> -->
+      <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="墓名" prop="cname" width="200" />
-      <el-table-column align="center" label="墓主" prop="vcname" width="150" />
-      <el-table-column align="center" label="联系人" prop="buyer_name" width="150" />
-      <el-table-column align="center" label="已完成服务" prop="finish_num">
-        <template slot-scope="scope">
-          {{ scope.row.finish_num }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="未完成服务" prop="to_be_com_num">
-        <template slot-scope="scope">
-          <span style="color:red"> {{ scope.row.to_be_com_num }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="状态" prop="wancheng_status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.wancheng_status | or_status">
-            {{ scope.row.wancheng_status == 1 ? '待完成' : '已完成' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">查看</el-button>
-        </template>
-      </el-table-column>
+
+      <el-table-column align="center" label="墓穴位置" prop="seatname" width="200" />
+      <el-table-column align="center" label="墓位类型" prop="typename" width="100" />
+      <el-table-column align="center" label="墓穴样式" prop="stylename" width="100" />
+      <el-table-column align="center" label="使用人姓名" prop="buryname" width="200" />
+      <el-table-column align="center" label="服务项目" prop="sell_title" />
+      <el-table-column align="center" label="单价" prop="unit_price" width="100" />
+      <el-table-column align="center" label="数量" prop="amount" width="80" />
+      <el-table-column align="center" label="实收价格" prop="real_price" width="100" />
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-dialog class="dialog" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh">
-      <el-table v-loading="listLoading_" :data="list_service" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-        <el-table-column align="center" label="服务名称" prop="service_name" />
-        <el-table-column align="center" label="服务数量" prop="serviceamount" width="80" />
-        <el-table-column align="center" label="创建时间" prop="begindate" width="100" />
-        <el-table-column align="center" label="状态" prop="resutlstatus" width="100">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.resutlstatus | or_status">
-              {{ scope.row.resutlstatus == 1 ? '待完成' : '已完成' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="130">
-          <template slot-scope="scope">
-            <el-button v-if="scope.row.resutlstatus == 2 " type="primary" size="mini" @click="handleCat(scope.row.id)">查看</el-button>
-            <el-button v-else type="danger" size="mini" @click="handleCreate(scope.row.id)">执行</el-button>
-          </template>
-
-        </el-table-column>
-      </el-table>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">关闭</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog class="dialog" :title="textMap[dialogStatus2]" :visible.sync="dialogFormVisible_" top="5vh">
-      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="margin-left:50px;">
-        <el-form-item label="完成时间" prop="execdate">
-          <el-date-picker
-            v-model="dataForm.execdate"
-            type="date"
-            :disabled="flag ? true : false"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-        <el-form-item v-if="flag" label="执行人员">
-          <el-input v-model="operater_name" :disabled="flag ? true : false" />
-        </el-form-item>
-        <el-form-item label="上传图片">
-          <span v-if="!flag" style="color:red">只能上传image/jpeg文件，且不超过2M</span>
-          <el-upload
-            class="avatar-uploader"
-            :headers="headers"
-            :action="uploadPath"
-            :disabled="flag ? true : false"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="image_url" :src="image_url" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="服务说明" prop="execnote">
-          <el-input v-model="dataForm.execnote" :disabled="flag ? true : false" type="textarea" style="width: 250px;" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible_ = false">取消</el-button>
-        <el-button v-if="flag == false" type="primary" @click="SendData">确定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
-import { AllCemetery, AllCemeteryCid, ExecuteService, CatService } from '@/api/to-service'
-import { uploadPath } from '@/api/upload'
-import { getToken } from '@/utils/auth'
+import { buy_services_list, export_order_stat } from '@/api/order'
+// import { get_name } from '@/api/cemetery'
+import { get_areas } from '@/api/cemetery'
 import Pagination from '@/components/Pagination'
+import { page, vuexData } from '@/utils/mixin'
 
 export default {
   name: 'VueSaveList',
   components: { Pagination },
+  mixins: [page, vuexData],
   data() {
     return {
-      uploadPath,
       list: null,
-      list_service: null,
-      operater_name: '',
+      export_list: null,
       total: 0,
-      image_url: '',
-      flag: false,
       listLoading: true,
-      listLoading_: true,
-      dialogStatus: '',
-      dialogStatus2: '',
-      textMap: {
-        update: '查看服务',
-        create: '服务执行'
-      },
+      area: null,
+      garen_id: '',
+      downloadLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
         keyword: undefined,
-        save_status: '',
+        y_id: '',
+        q_id: '',
+        type_id: '',
+        style_id: '',
+        begindate: '',
+        enddate: '',
         sort: 'add_time',
         order: 'desc'
-      },
-      dialogFormVisible: false,
-      dialogFormVisible_: false,
-      dataForm: {
-        cid: '',
-        id: '',
-        image_url: '',
-        execdate: '',
-        execnote: ''
-      },
-      rules: {
-        execdate: [{ required: true, message: '服务时间不能为空', trigger: 'change' }]
       }
     }
   },
   computed: {
-    headers() {
-      return {
-        'token': getToken()
-      }
-    }
+
   },
   created() {
     this.getList()
+    this.inquery()
   },
   methods: {
     getList() {
       this.listLoading = true
-      AllCemetery(this.listQuery)
+      buy_services_list(this.listQuery)
         .then(res => {
           this.list = res.data.data
           this.total = res.data.total || 0
@@ -173,125 +111,45 @@ export default {
           this.listLoading = false
         })
     },
+    getarea() {
+      const data = {
+        pid: this.listQuery.y_id
+      }
+      this.listQuery.q_id = ''
+      // this.dataForm.classify_id = ''
+      get_areas(data)
+        .then(res => {
+          this.area = res.data
+        })
+    },
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
     },
-    handleUpdate(row) {
-      this.listLoading_ = true
-      this.dialogStatus = row.cname
-      this.dialogFormVisible = true
-      this.dataForm.cid = row.cid
-      const data = { cid: row.cid }
-      AllCemeteryCid(data)
+    handleDownload() {
+      export_order_stat(this.listQuery)
         .then(res => {
-          this.list_service = res.data
-          this.listLoading_ = false
+          this.export_list = res.data.data
+          console.log(this.export_list)
         })
-        .catch(() => {
-          this.list_service = []
-          this.listLoading_ = false
-        })
+      // this.downloadLoading = true
+      // import('@/vendor/Export2Excel').then(excel => {
+      //   const tHeader = ['cname', 'y_name', 'usestatus']
+      //   const filterVal = ['cname', 'y_name', 'usestatus']
+      //   const data = this.formatJson(filterVal, this.list)
+      //   excel.export_json_to_excel({
+      //     header: tHeader,
+      //     data,
+      //     filename: 'table-list'
+      //   })
+      //   this.downloadLoading = false
+      // })
     },
-    handleCat(id) {
-      this.flag = true
-      this.dialogStatus2 = 'update'
-      const data = { id: id }
-      CatService(data)
-        .then(res => {
-          this.dialogFormVisible_ = true
-          this.image_url = res.data.image_url !== '' ? process.env.VUE_APP_BASE + res.data.image_url : ''
-          this.dataForm.execdate = res.data.execdate
-          this.operater_name = res.data.operater_name
-          this.dataForm.execnote = res.data.execnote
-        })
-    },
-    handleCreate(id) {
-      this.flag = false
-      this.dialogStatus2 = 'create'
-      this.image_url = ''
-      this.dataForm.execdate = ''
-      this.dataForm.execnote = ''
-      this.dialogFormVisible_ = true
-      this.dataForm.id = id
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-      //    if (this.dataForm.image_url) {
-      //   this.image_url = process.env.VUE_APP_BASE + this.dataForm.image_url
-      // } else {
-      //   this.image_url = ''
-      // }
-    },
-    handleAvatarSuccess(res, file) {
-      this.image_url = process.env.VUE_APP_BASE + file.response.data
-      this.dataForm.image_url = file.response.data
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
-    SendData() {
-      this.$refs['dataForm'].validate(valid => {
-        if (valid) {
-          ExecuteService(this.dataForm)
-            .then(res => {
-              for (const v of this.list_service) {
-                if (v.id === res.data.id) {
-                  v.resutlstatus = 2
-                  break
-                }
-              }
-              this.getList()
-              this.dialogFormVisible_ = false
-              this.$notify.success({
-                title: '成功',
-                message: '服务执行成功'
-              })
-            })
-            .catch(res => {
-              this.$notify.error({
-                title: '失败',
-                message: res.msg
-              })
-            })
-        }
-      })
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
     }
   }
 }
 </script>
-
-<style scope>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-</style>

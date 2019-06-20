@@ -13,6 +13,8 @@
       </el-table-column>
       <el-table-column align="center" label="服务项目" prop="sell_title" show-overflow-tooltip />
       <el-table-column align="center" width="80" label="服务总价" prop="sum_price" />
+      <el-table-column align="center" label="墓主" prop="buryname" />
+      <el-table-column align="center" label="服务时间" prop="service_time" />
       <el-table-column prop="order_status" label="付款状态" align="center" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.order_status | or_status">

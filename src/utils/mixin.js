@@ -1,6 +1,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { listlink } from '@/api/link'
 import { get_gardens, get_styles, get_types, get_status } from '@/api/cemetery'
+import { get_name } from '@/api/cemetery'
 export const vuexData = {
   data() {
     return {
@@ -32,6 +33,7 @@ export const page = {
   data() {
     return {
       listlink: null,
+      currentStatus: '',
       cemetery: {
         g: null,
         a: null,
@@ -50,6 +52,13 @@ export const page = {
         })
         .catch(() => {
           this.listlink = null
+        })
+    },
+    getStatus() {
+      const data = { cid: this.cems.id }
+      get_name(data)
+        .then(res => {
+          this.currentStatus = Number(res.data.usestatus)
         })
     },
     inquery() {

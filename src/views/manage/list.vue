@@ -7,7 +7,7 @@
     <div class="manage-tag">
       <el-tag v-for="(value,item,idx) in num" :key="idx" :class="item | getNum" style="margin-left:5px">{{ item | getNumtxt }}({{ value }})</el-tag>
     </div>
-    <el-row type="flex" class="row-bg">
+    <el-row :gutter="20">
       <el-col v-for="(item,value) in list" :key="value" :span="2" :class="item.usestatus | getlist">
         <div style="height:100%;" @click="CreateCemetery(item)">
           <p>墓号：{{ item.vno }}</p>

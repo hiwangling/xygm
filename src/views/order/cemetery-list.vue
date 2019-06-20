@@ -2,71 +2,97 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入寄存人或墓号" />
-      <el-select v-model="listQuery.save_status" placeholder="选择寄存状态" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in save" :key="item.id" :label="item.name" :value="item.id" />
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
+      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+        <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in area" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in cemetery.t" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-select v-model="listQuery.style_id" placeholder="选择样式" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in cemetery.s" :key="item.id" :label="item.type_name" :value="item.id" />
+      </el-select>
+      <el-date-picker
+        v-model="listQuery.begindate"
+        class="filter-item"
+        type="date"
+        style="width: 200px"
+        placeholder="开始日期"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
+      />
+      <el-date-picker
+        v-model="listQuery.enddate"
+        type="date"
+        style="width: 200px"
+        class="filter-item"
+        placeholder="结束日期"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
+      />
+      <!-- <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
+      </el-select> -->
+      <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <!-- <el-button v-permission="['POST /api/v1/cemetery/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button> -->
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="墓名" prop="cemetery_full_name" />
-      <el-table-column align="center" label="联系人" prop="link_name" width="100" />
-      <el-table-column align="center" label="联系电话" prop="phone" width="120" />
-      <el-table-column align="center" label="家庭地址" prop="address" />
-      <el-table-column align="center" label="开始时间" prop="savebegindate" width="120" />
-      <el-table-column align="center" label="结束时间" prop="saveenddate" width="120" />
-      <el-table-column align="center" label="费用" prop="saveprice" width="100" />
-      <el-table-column align="center" label="寄存状态" prop="save_status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.save_status | or_status">
-            {{ scope.row.save_status == 1 ? '寄存中' : '已取走' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="付款状态" prop="order_state">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.order_state | or_status">
-            {{ scope.row.order_state == 1 ? '未付款' : '已付款' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="到期时间" prop="guoqi_status" width="120">
+      <el-table-column align="center" label="订单号" prop="order_no" />
+      <el-table-column align="center" label="墓穴位置" prop="seatname" />
+      <el-table-column align="center" label="墓位类型" prop="stylename" />
+      <el-table-column align="center" label="样式" prop="typename" />
+      <el-table-column align="center" label="使用人" prop="buryname" />
+      <el-table-column align="center" label="购买人" prop="buyer_name" />
+      <el-table-column align="center" label="电话" prop="phone" />
+      <el-table-column align="center" label="购墓时间" prop="order_begin" />
+      <el-table-column align="center" label="实收价格" prop="sum_price" />
+      <!-- <el-table-column align="center" label="到期时间" prop="guoqi_status" width="120">
         <template v-if="scope.row.guoqi_days" slot-scope="scope">
           <el-tag :type="scope.row.guoqi_status | or_status">
             {{ scope.row.guoqi_days }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
 </template>
 <script>
-import { listSave } from '@/api/save'
+import { CemeteryOrderList, export_order_stat } from '@/api/order'
 // import { get_name } from '@/api/cemetery'
+import { get_areas } from '@/api/cemetery'
 import Pagination from '@/components/Pagination'
+import { page, vuexData } from '@/utils/mixin'
 
 export default {
   name: 'VueSaveList',
   components: { Pagination },
+  mixins: [page, vuexData],
   data() {
     return {
       list: null,
+      export_list: null,
       total: 0,
       listLoading: true,
-      save: [{
-        id: 1,
-        name: '寄存中'
-      }, {
-        id: 2,
-        name: '已取走'
-      }],
+      area: null,
+      garen_id: '',
+      downloadLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
         keyword: undefined,
-        save_status: '',
+        y_id: '',
+        q_id: '',
+        type_id: '',
+        style_id: '',
+        usestatus: '3',
+        begindate: '',
+        enddate: '',
         sort: 'add_time',
         order: 'desc'
       }
@@ -77,20 +103,14 @@ export default {
   },
   created() {
     this.getList()
+    this.inquery()
   },
   methods: {
     getList() {
       this.listLoading = true
-      listSave(this.listQuery)
+      CemeteryOrderList(this.listQuery)
         .then(res => {
           this.list = res.data.data
-          // this.list.forEach((val, key) => {
-          //   const data = { cid: val.cid }
-          //   get_name(data)
-          //     .then(res => {
-          //       this.list[key].cid = res.data.name
-          //     })
-          // })
           this.total = res.data.total || 0
           this.listLoading = false
         })
@@ -100,9 +120,44 @@ export default {
           this.listLoading = false
         })
     },
+    getarea() {
+      const data = {
+        pid: this.listQuery.y_id
+      }
+      this.listQuery.q_id = ''
+      // this.dataForm.classify_id = ''
+      get_areas(data)
+        .then(res => {
+          this.area = res.data
+        })
+    },
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      export_order_stat(this.listQuery)
+        .then(res => {
+          this.export_list = res.data
+      import('@/vendor/Export2Excel').then(excel => {
+        const filterVal = ['order_no', 'seatname', 'stylename', 'typename', 'buryname', 'buyer_name', 'phone', 'order_begin', 'sum_price']
+        const tHeader = ['订单号', '墓穴位置', '单合墓', '样式', '使用人姓名', '购买人姓名', '电话', '购墓时间', '实收价格']
+        const data = this.formatJson(filterVal, this.export_list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '公墓订单'
+        })
+        this.downloadLoading = false
+      })
+        })
+    },
+    formatJson(filterVal, jsonData) {
+      console.log(jsonData)
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
     }
   }
 }

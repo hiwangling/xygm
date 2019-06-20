@@ -14,7 +14,7 @@ const orderRouter = {
       name: 'VueReserveList',
       component: () => import('@/views/order/reserve-list'),
       meta: {
-        title: '预定管理',
+        title: '预定订单',
         noCache: true,
         perms: ['GET /api/v1/reserve/list']
       }
@@ -23,19 +23,9 @@ const orderRouter = {
       name: 'VueSaveList',
       component: () => import('@/views/order/save-list'),
       meta: {
-        title: '寄存管理',
+        title: '寄存订单',
         noCache: true,
         perms: ['GET /api/v1/save/list']
-      }
-    },
-    {
-      path: 'service-list',
-      name: 'VueServiceList',
-      component: () => import('@/views/order/service-list'),
-      meta: {
-        title: '服务管理',
-        noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }
     },
     {
@@ -43,7 +33,27 @@ const orderRouter = {
       name: 'VueCemeteryList',
       component: () => import('@/views/order/cemetery-list'),
       meta: {
-        title: '公墓管理',
+        title: '公墓订单',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'service-list',
+      name: 'VueServiceList',
+      component: () => import('@/views/order/service-list'),
+      meta: {
+        title: '服务订单',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'service-handle',
+      name: 'VueServiceHandle',
+      component: () => import('@/views/order/service-handle'),
+      meta: {
+        title: '服务处理',
         noCache: true,
         perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }

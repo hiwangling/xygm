@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-button v-if="list ? (list[0] ? list[0].type_id > list.length : true) : true" class="filter-item" type="primary" icon="el-icon-edit" style="margin:10px 0" @click="handleBury">添加墓主信息</el-button>
+    <el-button v-if=" list ? (list[0] ? list[0].type_id > list.length : true) : true" class="filter-item" type="primary" icon="el-icon-edit" style="margin:10px 0" @click="handleBury">添加墓主信息{{ currentStatus }}</el-button>
     <el-button v-else type="info" plain disabled style="margin:10px 0">墓位信息 </el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="姓名" prop="vcname" />
@@ -130,10 +130,10 @@
 </template>
 <script>
 import { listType } from '@/api/type'
-import { vuexData } from '@/utils/mixin'
+import { vuexData, page } from '@/utils/mixin'
 import { adddead, listdead, deletedead, updatedead, godead } from '@/api/dead'
 export default {
-  mixins: [vuexData],
+  mixins: [vuexData, page],
   data() {
     return {
       index: 1,
@@ -163,6 +163,7 @@ export default {
     cems: {
       handler(val) {
         this.getList()
+        this.getStatus()
         this.Creattype()
         this.SeleteCeme(this.type_id)
       },

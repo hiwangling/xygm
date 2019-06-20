@@ -3,7 +3,7 @@
     <div>
       <div class="filter-container" style="padding-bottom:0">
         <el-form ref="dataForm" :rules="rules" :inline="true" :model="dataForm" status-icon label-position="left" label-width="80px">
-          <el-form-item label="联系人" prop="linkman_id">
+          <el-form-item label="付款人" prop="linkman_id">
             <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" style="width:140px" size="mini">
               <el-option
                 v-for="item in listlink"
@@ -12,20 +12,21 @@
                 :value="item.id"
               />
             </el-select>
+            <!-- <el-input v-model="dataForm.linkman_id" placeholder="请输入内容" /> -->
           </el-form-item>
           <el-form-item label="服务时间">
             <el-date-picker
-              v-model="dataForm.servicedate"
+              v-model="dataForm.service_time"
               style="width:140px!important"
               size="mini"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择日期"
             />
           </el-form-item>
           <el-form-item label="墓主">
-            <el-checkbox-group v-model="dataForm.bury">
-              <el-checkbox label="墓主1" />
-              <el-checkbox label="墓主2" />
+            <el-checkbox-group v-model="dataForm.buryarr">
+              <el-checkbox v-for="(val,item,index) in dead" :key="index" :label="val" />
             </el-checkbox-group>
           </el-form-item>
         </el-form>
@@ -82,10 +83,9 @@
     </div>
   </el-dialog>
 </template>
-
 <script>
-// import { listService } from '@/api/service'
 import { getEditService, addservices, editservices, getServiceOne } from '@/api/buy-service'
+import { listdead } from '@/api/dead'
 import { page, vuexData } from '@/utils/mixin'
 export default {
   mixins: [page, vuexData],
@@ -93,16 +93,18 @@ export default {
     return {
       bury: '',
       order_detail_ids: null,
-      sum_price: '',
       id: '',
       dataForm: {
+        cid: '',
+        services: null,
         linkman_id: '',
-        servicedate: '',
-        bury: ['墓主1']
+        service_time: '',
+        sum_price: '',
+        buryarr: []
       },
-
       list: null,
       sell: null,
+      dead: [],
       listLoading: true,
       multipleSelection: [],
       dialogStatus: '',
@@ -125,7 +127,7 @@ export default {
             sum_price = sum_price + parseInt(v.sellprice)
           })
         }
-        this.sum_price = sum_price
+        this.dataForm.sum_price = sum_price
       },
       immediate: true
     }
@@ -176,6 +178,17 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
       this.link()
+      this.deadlist()
+    },
+    deadlist() {
+      const data = { cid: this.cems.id }
+      this.dead = []
+      listdead(data)
+        .then(res => {
+          res.data.forEach((v, k) => {
+            this.dead.push(v.vcname)
+          })
+        })
     },
     editservice(val) {
       this.id = val
@@ -197,15 +210,11 @@ export default {
       this.link()
     },
     sendData() {
-      const data = {
-        cid: this.cems.id,
-        services: this.sell,
-        sum_price: this.sum_price,
-        linkman_id: this.dataForm.linkman_id
-      }
+      this.dataForm.cid = this.cems.id
+      this.dataForm.services = this.sell
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          addservices(data)
+          addservices(this.dataForm)
             .then(res => {
               this.$notify.success({
                 title: '成功',
@@ -228,7 +237,7 @@ export default {
         id: this.id,
         services: this.sell,
         order_detail_ids: this.order_detail_ids,
-        sum_price: this.sum_price,
+        sum_price: this.dataForm.sum_price,
         linkman_id: this.dataForm.linkman_id
       }
       this.$refs['dataForm'].validate(valid => {
