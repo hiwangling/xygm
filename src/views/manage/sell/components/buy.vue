@@ -26,16 +26,6 @@
     </el-table>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="1vh" append-to-body>
       <el-form ref="dataForm" :inline="true" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px">
-        <!-- <el-form-item label="联系人" prop="linkman_id" :rules="[dataForm.link_name ? true : { required: true, message: '联系人不能为空', trigger: 'change' }]">
-          <el-select v-model="dataForm.linkman_id" clearable placeholder="请选择" :disabled="dataForm.link_name ? true : false" @change="changelink">
-            <el-option
-              v-for="item in listlink"
-              :key="item.id"
-              :label="item.link_name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="联系人" prop="link_name">
           <el-input v-model="dataForm.link_name" />
         </el-form-item>
@@ -84,7 +74,7 @@
         </el-form-item>
       </el-form>
       <div class="ele" />
-      <Vue-form />
+      <Vue-form ref="child" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
@@ -94,7 +84,7 @@
   </div>
 </template>
 <script>
-import { addbuy, listbuy, editbuy, deletebuy, pay } from '@/api/buy'
+import { listbuy, editbuy, deletebuy, pay } from '@/api/buy'
 import { vuexData } from '@/utils/mixin'
 import VueForm from './form'
 export default {
@@ -111,7 +101,6 @@ export default {
       dialogStatus: '',
       dataForm: {
         cid: '',
-        linkman_id: '',
         order_begin: '',
         order_end: '',
         real_price: '',
@@ -172,22 +161,24 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          addbuy(this.dataForm)
-            .then(res => {
-              res.data.sell_price = this.cems.sellprice
-              this.list.unshift(res.data)
-              this.dialogFormVisible = false
-              this.$notify.success({
-                title: '成功',
-                message: '添加购墓信息成功'
-              })
-            })
-            .catch(res => {
-              this.$notify.error({
-                title: '失败',
-                message: res.msg
-              })
-            })
+          this.$refs.child.addForm(this.dataForm)
+
+          // addbuy(this.dataForm)
+          //   .then(res => {
+          //     res.data.sell_price = this.cems.sellprice
+          //     this.list.unshift(res.data)
+          //     this.dialogFormVisible = false
+          //     this.$notify.success({
+          //       title: '成功',
+          //       message: '添加购墓信息成功'
+          //     })
+          //   })
+          //   .catch(res => {
+          //     this.$notify.error({
+          //       title: '失败',
+          //       message: res.msg
+          //     })
+          //   })
         }
       })
     },
@@ -202,9 +193,6 @@ export default {
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
-      if (this.dataForm.linkman_id) {
-        this.dataForm.link_name = ''
-      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -292,7 +280,6 @@ export default {
     resetForm() {
       this.dataForm = {
         cid: this.cems.id,
-        linkman_id: '',
         order_begin: '',
         order_end: '',
         real_price: '',
