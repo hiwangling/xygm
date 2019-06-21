@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <buy @v="v" />
-    <dead @v="v" />
-    <linkman />
+    <dead ref="dead" @v="v" />
+    <linkman ref="linkman" />
   </div>
 </template>
 <script>
@@ -19,6 +19,8 @@ export default {
   methods: {
     v() {
       this.$emit('v')
+      this.$refs.dead.refresh()
+      this.$refs.linkman.refresh()
     }
   }
 }

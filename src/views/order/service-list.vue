@@ -129,7 +129,7 @@ export default {
     handleDownload() {
       export_order_stat(this.listQuery)
         .then(res => {
-          this.export_list = res.data.data
+          this.export_list = res.data
           console.log(this.export_list)
         })
       // this.downloadLoading = true

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-button v-if=" list ? (list[0] ? list[0].type_id > list.length : true) : true" class="filter-item" type="primary" icon="el-icon-edit" style="margin:10px 0" @click="handleBury">添加墓主信息{{ currentStatus }}</el-button>
+    <el-button v-if=" list ? (list[0] ? list[0].type_id > list.length : true) : true" class="filter-item" type="primary" icon="el-icon-edit" style="margin:10px 0" @click="handleBury">添加墓主信息</el-button>
     <el-button v-else type="info" plain disabled style="margin:10px 0">墓位信息 </el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="姓名" prop="vcname" />
@@ -129,6 +129,9 @@ export default {
           this.listLoading = false
         })
     },
+    refresh() {
+      this.getList()
+    },
     handleBury() {
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -213,11 +216,8 @@ export default {
       })
     },
     createData() {
-      const Creatdata = {
-        bury: this.dataForm,
-        cid: this.cems.id
-      }
-      adddead(Creatdata)
+      this.dataForm.cid = this.cems.id
+      adddead(this.dataForm)
         .then(res => {
           this.getList()
           this.dialogFormVisible = false
@@ -234,7 +234,7 @@ export default {
         })
     },
     resetForm() {
-      this.dataForm = [{
+      this.dataForm = {
         cid: this.cems.id,
         card_no: '',
         vcname: '',
@@ -242,7 +242,7 @@ export default {
         birth: '',
         death: '',
         bury: ''
-      }]
+      }
     }
   }
 }

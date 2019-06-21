@@ -59,7 +59,7 @@
 <script>
 import { listType } from '@/api/type'
 import { vuexData, page } from '@/utils/mixin'
-// import { addbuy } from '@/api/buy'
+import { addbuy } from '@/api/buy'
 export default {
   mixins: [vuexData, page],
   data() {
@@ -119,26 +119,27 @@ export default {
         }
       })
       const data = {
-        bury: val,
+        buy: val,
         dead: dead
       }
-      console.log(data)
-      // addbuy(this.dataForm)
-      //   .then(res => {
-      //     res.data.sell_price = this.cems.sellprice
-      //     this.list.unshift(res.data)
-      //     this.dialogFormVisible = false
-      //     this.$notify.success({
-      //       title: '成功',
-      //       message: '添加购墓信息成功'
-      //     })
-      //   })
-      //   .catch(res => {
-      //     this.$notify.error({
-      //       title: '失败',
-      //       message: res.msg
-      //     })
-      //   })
+      addbuy(data)
+        .then(res => {
+          // res.data.sell_price = this.cems.sellprice
+          // this.list.unshift(res.data)
+          // this.dialogFormVisible = false
+          this.$emit('CloseDialog', false)
+          console.log(1)
+          this.$notify.success({
+            title: '成功',
+            message: '添加购墓信息成功'
+          })
+        })
+        .catch(res => {
+          this.$notify.error({
+            title: '失败',
+            message: res.msg
+          })
+        })
     },
     Creattype() {
       listType()

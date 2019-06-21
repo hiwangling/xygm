@@ -17,19 +17,19 @@
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" append-to-body top="5vh">
       <div class="linkman">
         <el-form ref="dataForm" :inline="true" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="margin-left:50px;" class="dataFormman">
-          <el-form-item label="联系人姓名" prop="link_name">
+          <el-form-item label="姓名" prop="link_name">
             <el-input v-model="dataForm.link_name" />
           </el-form-item>
-          <el-form-item label="联系人电话" prop="phone">
+          <el-form-item label="电话" prop="phone">
             <el-input v-model="dataForm.phone" />
           </el-form-item>
-          <el-form-item label="身份证号码" prop="card_no">
+          <el-form-item label="身份证" prop="card_no">
             <el-input v-model="dataForm.card_no" />
           </el-form-item>
           <el-form-item label="关系" prop="relation">
             <el-input v-model="dataForm.relation" />
           </el-form-item>
-          <el-form-item label="家庭住址" prop="address">
+          <el-form-item label="住址" prop="address">
             <el-input v-model="dataForm.address" />
           </el-form-item>
         </el-form>
@@ -90,6 +90,9 @@ export default {
           this.list = []
           this.listLoading = false
         })
+    },
+    refresh() {
+      this.getList()
     },
     handlelink() {
       this.resetForm()

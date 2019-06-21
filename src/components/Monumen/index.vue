@@ -1,5 +1,5 @@
 <template>
-  <div style="height:700px">
+  <div style="height:700px;position: relative;">
     <el-button type="danger" plain size="small" @click="flag = true">竖碑</el-button>
     <el-button type="danger" plain size="small" @click="flag = false">横碑</el-button>
     <el-button v-if="flag" type="primary" plain size="small" @click="addBig">添加竖碑(大)</el-button>
@@ -27,6 +27,7 @@
 import { vuexData } from '@/utils/mixin'
 import Drag from './components/Drag'
 import text from '@/utils/text'
+import { listdead } from '@/api/dead'
 
 const initHori = text.initHori
 const initVert = text.initVert
@@ -35,6 +36,7 @@ export default {
   mixins: [vuexData],
   data() {
     return {
+      sex: '男',
       flag: true,
       dead: null,
       hori: [],
@@ -56,14 +58,50 @@ export default {
   //     return { big, small }
   //   }
   // },
+  watch: {
+    cems: {
+      handler(val) {
+        this.init()
+      },
+      immediate: true
+    }
+  },
   created() {
-    this.hori = Object.assign([], initHori)
-    this.vert = Object.assign([], initVert)
+
   },
   methods: {
+    init() {
+      const data = {
+        cid: this.cems.id
+      }
+      listdead(data)
+        .then(res => {
+          const dead = {
+            dead1: '',
+            dead2: ''
+          }
+          res.data.forEach((v, k) => {
+            if (v.sex === this.sex) {
+              dead.dead1 = res.data[k].vcname
+            } else {
+              dead.dead2 = res.data[k].vcname
+            }
+          })
+          // console.log(dead)
+          initVert.forEach((v, k) => {
+            if (v.match === 'dead1') {
+              v.t = dead.dead1
+            } else if (v.match === 'dead2') {
+              v.t = dead.dead2
+            }
+          })
+        })
+      this.hori = Object.assign([], initHori)
+      this.vert = Object.assign([], initVert)
+    },
     addBig() {
       const A = {
-        t: '竖排大',
+        t: '',
         s: true,
         e: false,
         h: false,
@@ -74,7 +112,7 @@ export default {
     },
     addSmall() {
       const B = {
-        t: '竖排小',
+        t: '',
         s: false,
         e: false,
         h: false,
@@ -85,7 +123,7 @@ export default {
     },
     addh() {
       const C = {
-        t: '横排小',
+        t: '',
         s: false,
         e: false,
         h: true,

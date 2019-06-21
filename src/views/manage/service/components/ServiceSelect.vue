@@ -138,8 +138,8 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      const parm = { service_type: 2 }
-      getServiceOne(parm)
+      // const parm = { service_type: 2 }
+      getServiceOne()
         .then(res => {
           this.list = res.data
           this.listLoading = false

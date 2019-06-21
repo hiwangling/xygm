@@ -18,15 +18,6 @@ const orderRouter = {
         noCache: true,
         perms: ['GET /api/v1/reserve/list']
       }
-    }, {
-      path: 'save-list',
-      name: 'VueSaveList',
-      component: () => import('@/views/order/save-list'),
-      meta: {
-        title: '寄存订单',
-        noCache: true,
-        perms: ['GET /api/v1/save/list']
-      }
     },
     {
       path: 'cemetery-list',
@@ -46,6 +37,16 @@ const orderRouter = {
         title: '服务订单',
         noCache: true,
         perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'save-list',
+      name: 'VueSaveList',
+      component: () => import('@/views/order/save-list'),
+      meta: {
+        title: '寄存管理',
+        noCache: true,
+        perms: ['GET /api/v1/save/list']
       }
     },
     {

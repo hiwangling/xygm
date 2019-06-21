@@ -3,7 +3,7 @@
     <el-button v-if="list ? list.length < 1 : true" class="filter-item" type="primary" icon="el-icon-edit" style="margin:0 0 10px 0" @click="handleBury">添加购墓信息</el-button>
     <el-button v-else type="info" plain disabled style="margin:10px 0">购墓单信息</el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="订单号" prop="order_no" />
+      <el-table-column align="center" label="订单号" prop="order_no" width="120" />
       <el-table-column align="center" width="80" label="购墓人" prop="link_name" />
       <el-table-column align="center" label="购买日期" prop="order_begin" />
       <el-table-column align="center" label="到期日期" prop="order_end" />
@@ -73,8 +73,10 @@
           />
         </el-form-item>
       </el-form>
-      <div class="ele" />
-      <Vue-form ref="child" />
+      <template v-if="dataFormEdit">
+        <div class="ele" />
+        <Vue-form ref="child" @CloseDialog="CloseDialog" />
+      </template>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
@@ -93,6 +95,7 @@ export default {
   data() {
     return {
       index: 1,
+      dataFormEdit: true,
       list: null,
       type_id: '2',
       listlink: null,
@@ -152,53 +155,28 @@ export default {
     handleBury() {
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.dataFormEdit = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
       this.resetForm()
-      // this.listlink_()
     },
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.$refs.child.addForm(this.dataForm)
-
-          // addbuy(this.dataForm)
-          //   .then(res => {
-          //     res.data.sell_price = this.cems.sellprice
-          //     this.list.unshift(res.data)
-          //     this.dialogFormVisible = false
-          //     this.$notify.success({
-          //       title: '成功',
-          //       message: '添加购墓信息成功'
-          //     })
-          //   })
-          //   .catch(res => {
-          //     this.$notify.error({
-          //       title: '失败',
-          //       message: res.msg
-          //     })
-          //   })
         }
       })
     },
-    changelink() {
-      this.$nextTick(() => {
-        this.dataForm.phone = ''
-        this.dataForm.relation = ''
-        this.dataForm.address = ''
-        this.dataForm.card_no = ''
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
     handleUpdate(row) {
+      console.log(row)
       this.dataForm = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.dataFormEdit = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      // this.listlink_()
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
@@ -244,6 +222,11 @@ export default {
             message: res.msg
           })
         })
+    },
+    CloseDialog(val) {
+      this.dialogFormVisible = false
+      this.getList()
+      this.$emit('v')
     },
     handlePay() {
       this.$confirm('付款此订单后购墓信息及墓主信息将无法再次修改, 是否继续?', '付款操作', {
@@ -291,18 +274,6 @@ export default {
         vcnote: ''
       }
     }
-    // listlink_() {
-    //   const data = {
-    //     cid: this.cems.id
-    //   }
-    //   listlink(data)
-    //     .then(res => {
-    //       this.listlink = res.data
-    //     })
-    //     .catch(() => {
-    //       this.listlink = null
-    //     })
-    // }
   }
 }
 </script>

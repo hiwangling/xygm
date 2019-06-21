@@ -7,7 +7,7 @@
       'top':child.p + 'px',
       'left':child.l + 'px',
       'width':child.h ? 'auto' : '22px',
-      'border-top':child.e ? '3px solid #4a9ff9' : '0',
+      'border-top':child.e ? '3px solid #4a9ff9' : '1px dashed #ccc',
       'font-size':child.s ? '20px' : '16px'
     }"
     @input="changeTxt"
@@ -86,7 +86,7 @@ export default {
         padding: 2px 0px;
         text-align: center;
         cursor:pointer;
-        /* border: 1px dashed #666; */
+         border: 1px dashed #ccc;
         border-top: 3px solid #4a9ff9;
         outline: none;
     }

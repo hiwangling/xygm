@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加服务信息</el-button>
+      <el-button v-if="currentStatus != 1" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加服务信息</el-button>
+      <el-button v-else type="info" plain disabled>服务已锁定</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleMonumen">刻碑</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="110" label="订单号" prop="order_no" />
@@ -34,15 +36,24 @@
       </el-table-column>
     </el-table>
     <Service-select ref="child" @CloseDialog="CloseDialog" />
+    <el-dialog id="monumen" class="dialog" title="刻碑" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+      <Monumen />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary">确定</el-button>
+        <el-button v-else type="primary">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import ServiceSelect from './components/ServiceSelect'
 import { getsevices, delservices, payservices } from '@/api/buy-service'
-import { vuexData } from '@/utils/mixin'
+import { vuexData, page } from '@/utils/mixin'
+import Monumen from '@/components/Monumen'
 export default {
-  components: { ServiceSelect },
-  mixins: [vuexData],
+  components: { ServiceSelect, Monumen },
+  mixins: [vuexData, page],
   data() {
     return {
       index: 2,
@@ -50,13 +61,20 @@ export default {
       linkman_id: '',
       listlink: '',
       linkdata: null,
+      dialogFormVisible: false,
       listLoading: false
     }
   },
   watch: {
+    order(val) {
+      if (val === this.index) {
+        this.getStatus()
+      }
+    },
     cems: {
       handler(val) {
         this.getList()
+        // this.getStatus()
       },
       immediate: true
     }
@@ -131,18 +149,16 @@ export default {
         })
       })
     },
-    Creatlink(val) {
-    //   let obj = {}
-    //   obj = this.listlink.find((item) => {
-    //     return item.id === val
-    //   })
-    //   this.linkdata = obj
+    handleMonumen() {
+      this.dialogFormVisible = true
     }
 
   }
 }
 </script>
-<style scoped>
-
+<style >
+#monumen .el-dialog{
+  width: 900px;
+}
 </style>
 

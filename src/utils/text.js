@@ -1,3 +1,4 @@
+
 /**
  *  数据的定义
  * t - 文字
@@ -171,6 +172,22 @@ export default {
     l: 540,
     p: 70
   }, {
+    t: '',
+    s: true,
+    e: false,
+    h: false,
+    l: 540,
+    p: 105,
+    match: 'dead1'
+  }, {
+    t: '',
+    s: true,
+    e: false,
+    h: false,
+    l: 460,
+    p: 105,
+    match: 'dead2'
+  }, {
     t: '大人之墓',
     s: true,
     e: false,
@@ -182,7 +199,7 @@ export default {
     s: false,
     e: false,
     h: false,
-    l: 250,
+    l: 255,
     p: 45
   }, {
     t: '女',
@@ -196,7 +213,7 @@ export default {
     s: false,
     e: false,
     h: false,
-    l: 290,
+    l: 300,
     p: 70
   }, {
     t: '年',
@@ -219,5 +236,35 @@ export default {
     h: false,
     l: 125,
     p: 500
-  }]
+  }, {
+    t: '',
+    s: false,
+    e: false,
+    h: false,
+    l: 210,
+    p: 105
+  }, {
+    t: '',
+    s: false,
+    e: false,
+    h: false,
+    l: 240,
+    p: 105
+  }, {
+    t: '',
+    s: false,
+    e: false,
+    h: false,
+    l: 270,
+    p: 105
+  }, {
+    t: '',
+    s: false,
+    e: false,
+    h: false,
+    l: 300,
+    p: 105
+  }
+  ]
+
 }

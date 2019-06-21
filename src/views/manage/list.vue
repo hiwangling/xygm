@@ -30,15 +30,14 @@ import { vuexData } from '@/utils/mixin'
 import Pagination from '@/components/Pagination'
 import Service from './service/service'
 import Sell from './sell/sell'
-import Save from './save/save'
 import Reserve from './reserve/reserve'
-import monument from './monumen/monumen'
+// import monument from './monumen/monumen'
 import lamp from './lamp/lamp'
 import swap from './swap/swap'
 import move from './move/move'
 export default {
   name: 'VueLists',
-  components: { Pagination, Service, Sell, Reserve, Save, monument, lamp, swap, move },
+  components: { Pagination, Service, Sell, Reserve, lamp, swap, move },
   mixins: [vuexData],
   data() {
     return {
@@ -60,8 +59,7 @@ export default {
         { label: '预定', name: 'reserve' },
         { label: '购墓', name: 'sell' },
         { label: '服务', name: 'service' },
-        { label: '寄存', name: 'save' },
-        { label: '碑文', name: 'monument' },
+        // { label: '碑文', name: 'monument' },
         { label: '点灯', name: 'lamp' },
         { label: '换墓', name: 'swap' },
         { label: '退迁', name: 'move' }

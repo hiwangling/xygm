@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button v-if="currentStatus === 1 && list ? list.length < 1 : '' " class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息{{ currentStatus }}</el-button>
-      <el-button v-else type="info" plain disabled>墓穴已锁定{{ currentStatus }}</el-button>
+      <el-button v-if="currentStatus === 1 && list ? list.length < 1 : '' " class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加预定信息</el-button>
+      <el-button v-else type="info" plain disabled>墓穴已锁定</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="预定人" prop="buyer_name" />

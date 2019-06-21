@@ -7,13 +7,66 @@
         <el-option v-for="item in save" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加寄存信息</el-button>
     </div>
+    <el-dialog class="dialog" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+      <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
+        <!-- <el-form-item label="联系人" prop="link_name">
+          <el-select v-model="dataForm.link_name" clearable placeholder="请选择" style="width:150px">
+            <el-option
+              v-for="item in listlink"
+              :key="item.id"
+              :label="item.link_name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item> -->
+        <el-form-item label="寄存人">
+          <el-input v-model="dataForm.link_name" />
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="dataForm.phone" />
+        </el-form-item>
+        <el-form-item label="开始时间">
+          <el-date-picker
+            v-model="dataForm.savebegindate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+          />
+        </el-form-item>
+        <el-form-item label="结束时间">
+          <el-date-picker
+            v-model="dataForm.saveenddate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+          />
+        </el-form-item>
+        <el-form-item label="寄存地点">
+          <el-select v-model="dataForm.saveareaaddr" clearable placeholder="请选择" style="width:150px">
+            <el-option
+              v-for="item in address"
+              :key="item.id"
+              :label="item.link_name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="寄存费用">
+          <el-input v-model="dataForm.saveprice" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
+        <el-button v-else type="primary" @click="updateData">确定</el-button>
+      </div>
+    </el-dialog>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="墓名" prop="cemetery_full_name" />
-      <el-table-column align="center" label="联系人" prop="link_name" width="100" />
-      <el-table-column align="center" label="联系电话" prop="phone" width="120" />
-      <el-table-column align="center" label="家庭地址" prop="address" />
+      <el-table-column align="center" label="寄存人" prop="link_name" width="100" />
+      <el-table-column align="center" label="电话" prop="phone" width="120" />
       <el-table-column align="center" label="开始时间" prop="savebegindate" width="120" />
       <el-table-column align="center" label="结束时间" prop="saveenddate" width="120" />
       <el-table-column align="center" label="费用" prop="saveprice" width="100" />
@@ -43,10 +96,8 @@
   </div>
 </template>
 <script>
-import { listSave } from '@/api/save'
-// import { get_name } from '@/api/cemetery'
+import { updateSave, createSave, listSave, deleteSave, PaySave } from '@/api/save'
 import Pagination from '@/components/Pagination'
-
 export default {
   name: 'VueSaveList',
   components: { Pagination },
@@ -55,6 +106,12 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      dialogFormVisible: false,
+      dialogStatus: '',
+      address: [{
+        id: '常青园',
+        link_name: '常青园'
+      }],
       save: [{
         id: 1,
         name: '寄存中'
@@ -62,6 +119,14 @@ export default {
         id: 2,
         name: '已取走'
       }],
+      dataForm: {
+        link_name: '',
+        phone: '',
+        savebegindate: '',
+        saveenddate: '',
+        saveareaaddr: '',
+        saveprice: ''
+      },
       listQuery: {
         page: 1,
         limit: 20,
@@ -69,6 +134,9 @@ export default {
         save_status: '',
         sort: 'add_time',
         order: 'desc'
+      },
+      rules: {
+        // link_name: [{ required: true, message: '联系人不能为空', trigger: 'change' }]
       }
     }
   },
@@ -84,13 +152,6 @@ export default {
       listSave(this.listQuery)
         .then(res => {
           this.list = res.data.data
-          // this.list.forEach((val, key) => {
-          //   const data = { cid: val.cid }
-          //   get_name(data)
-          //     .then(res => {
-          //       this.list[key].cid = res.data.name
-          //     })
-          // })
           this.total = res.data.total || 0
           this.listLoading = false
         })
@@ -99,6 +160,49 @@ export default {
           this.total = 0
           this.listLoading = false
         })
+    },
+    handleCreate() {
+      this.resetForm()
+      this.dialogStatus = '创建'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          createSave(this.dataForm)
+            .then(res => {
+              // this.list.unshift(res.data)
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify.success({
+                title: '成功',
+                message: '添加寄存信息成功'
+              })
+            })
+            .catch(res => {
+              this.$notify.error({
+                title: '失败',
+                message: res.msg
+              })
+            })
+        }
+      })
+    },
+    resetForm() {
+      this.dataForm = {
+        link_name: '',
+        phone: '',
+        savebegindate: '',
+        saveenddate: '',
+        saveareaaddr: '',
+        saveprice: ''
+      }
+    },
+    updateData() {
+
     },
     handleFilter() {
       this.listQuery.page = 1
