@@ -28,6 +28,7 @@ import { vuexData } from '@/utils/mixin'
 import Drag from './components/Drag'
 import text from '@/utils/text'
 import { listdead } from '@/api/dead'
+import { inscription_add, get_inscription } from '@/api/monumen'
 
 const initHori = text.initHori
 const initVert = text.initVert
@@ -74,6 +75,14 @@ export default {
       const data = {
         cid: this.cems.id
       }
+      get_inscription(data)
+        .then(res => {
+          if (res.data) {
+            this.vert = res.data
+          } else {
+            this.rest()
+          }
+        })
       listdead(data)
         .then(res => {
           const dead = {
@@ -141,6 +150,26 @@ export default {
       } else {
         this.hori = Object.assign([], initHori)
       }
+    },
+    getData() {
+      const data = {
+        cid: this.cems.id,
+        inscription: this.vert
+      }
+      inscription_add(data)
+        .then(res => {
+          this.$emit('CloseDialog')
+          this.$notify.success({
+            title: '成功',
+            message: '操作成功'
+          })
+        })
+        .catch(res => {
+          this.$notify.error({
+            title: '失败',
+            message: res.msg
+          })
+        })
     }
   }
 }

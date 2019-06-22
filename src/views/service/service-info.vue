@@ -63,13 +63,13 @@
           <el-input v-model="dataForm.list_value" type="textarea" placeholder="200:10年管理费，300:20年管理费" />
         </el-form-item>
         <el-form-item label="服务类型 " prop="service_type">
-          <el-checkbox-group v-model="dataForm.service_type">
-            <el-checkbox
+          <el-radio-group v-model="dataForm.service_type" class="rodios">
+            <el-radio
               v-for="(value, item) in typeServices"
               :key="item"
               :label="item"
-            >{{ value }}</el-checkbox>
-          </el-checkbox-group>
+            >{{ value }}</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
 
@@ -250,4 +250,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.rodios .el-radio{
+  margin: 10px;
+}
+</style>
 

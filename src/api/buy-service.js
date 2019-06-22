@@ -7,7 +7,13 @@ export function getsevices(query) {
     params: query
   })
 }
-
+export function get_mentstatus(query) {
+  return request({
+    url: '/cemetery/get_mentstatus',
+    method: 'get',
+    params: query
+  })
+}
 export function addservices(data) {
   return request({
     url: '/cemetery/buy_services_add',

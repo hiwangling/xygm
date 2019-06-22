@@ -3,7 +3,7 @@
     <div style="margin:0 0 10px 0">
       <el-button v-if="currentStatus != 1" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加服务信息</el-button>
       <el-button v-else type="info" plain disabled>服务已锁定</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleMonumen">刻碑</el-button>
+      <el-button v-if="status" class="filter-item" type="primary" icon="el-icon-edit" @click="handleMonumen">刻碑</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="110" label="订单号" prop="order_no" />
@@ -37,18 +37,17 @@
     </el-table>
     <Service-select ref="child" @CloseDialog="CloseDialog" />
     <el-dialog id="monumen" class="dialog" title="刻碑" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <Monumen />
+      <Monumen ref="get" @CloseDialog="CloseDialog" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary">确定</el-button>
-        <el-button v-else type="primary">确定</el-button>
+        <el-button type="primary" @click="createDate">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import ServiceSelect from './components/ServiceSelect'
-import { getsevices, delservices, payservices } from '@/api/buy-service'
+import { getsevices, delservices, payservices, get_mentstatus } from '@/api/buy-service'
 import { vuexData, page } from '@/utils/mixin'
 import Monumen from '@/components/Monumen'
 export default {
@@ -58,6 +57,7 @@ export default {
     return {
       index: 2,
       list: null,
+      status: false,
       linkman_id: '',
       listlink: '',
       linkdata: null,
@@ -85,6 +85,11 @@ export default {
       const data = {
         cid: this.cems.id
       }
+      get_mentstatus(data)
+        .then(res => {
+          console.log(res.data)
+          this.status = res.data !== '0'
+        })
       getsevices(data)
         .then(res => {
           this.list = res.data
@@ -103,6 +108,7 @@ export default {
     },
     CloseDialog(val) {
       this.getList()
+      this.dialogFormVisible = false
     },
     handleDelete(row) {
       delservices(row)
@@ -151,8 +157,10 @@ export default {
     },
     handleMonumen() {
       this.dialogFormVisible = true
+    },
+    createDate() {
+      this.$refs.get.getData()
     }
-
   }
 }
 </script>
