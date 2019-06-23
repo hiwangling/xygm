@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.pid" placeholder="选择墓园" clearable style="width: 160px" class="filter-item">
+      <!-- <el-select v-model="listQuery.pid" placeholder="选择墓园" clearable style="width: 160px" class="filter-item">
         <el-option v-for="item in gardens" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select>
+      </el-select> -->
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
     <el-row :gutter="20" class="area">
@@ -27,6 +28,7 @@
 </template>
 <script>
 import { listArea } from '@/api/area'
+import { listGrave } from '@/api/grave'
 import { get_gardens } from '@/api/cemetery'
 export default {
   name: 'VueList',
@@ -39,6 +41,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        q_id: 11,
         pid: undefined,
         sort: 'add_time',
         order: 'desc'
@@ -72,7 +75,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      this.getList()
+      listGrave(this.listQuery)
+        .then(res => {
+          this.list = res.data.data
+          this.total = res.data.total || 0
+          this.listLoading = false
+        })
     }
   }
 }

@@ -181,6 +181,9 @@ export default {
       this.deadlist()
     },
     deadlist() {
+      this.getdead()
+    },
+    getdead() {
       const data = { cid: this.cems.id }
       this.dead = []
       listdead(data)
@@ -191,12 +194,15 @@ export default {
         })
     },
     editservice(val) {
+      // this.dead = val
+      this.getdead()
       this.id = val
       const data = { id: val }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       getEditService(data)
         .then(res => {
+          // console.log(res.data)
           this.order_detail_ids = res.data.order_detail_ids
           this.dataForm.linkman_id = res.data.linkman_id
           const service = res.data.services
@@ -233,16 +239,13 @@ export default {
       })
     },
     editData() {
-      const data = {
-        id: this.id,
-        services: this.sell,
-        order_detail_ids: this.order_detail_ids,
-        sum_price: this.dataForm.sum_price,
-        linkman_id: this.dataForm.linkman_id
-      }
+      this.dataForm.services = this.sell
+      this.dataForm.cid = this.cems.id
+      this.dataForm.id = this.id
+      this.dataForm.order_detail_ids = this.order_detail_ids
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          editservices(data)
+          editservices(this.dataForm)
             .then(res => {
               this.$notify.success({
                 title: '成功',

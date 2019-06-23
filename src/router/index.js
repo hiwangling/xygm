@@ -9,6 +9,7 @@ import settingRouter from './modules/setting'
 import serviceRouter from './modules/service'
 import manageRouter from './modules/manage'
 import orderRouter from './modules/order'
+import statsRouter from './modules/stats'
 
 export const constantRoutes = [
   {
@@ -60,6 +61,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
   manageRouter,
   orderRouter,
+  statsRouter,
   cemeteryRouter,
   serviceRouter,
   settingRouter,

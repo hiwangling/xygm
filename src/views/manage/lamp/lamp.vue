@@ -61,13 +61,13 @@
         <el-form-item label="身份证" prop="sfz">
           <el-input v-model="dataForm.sfz" />
         </el-form-item>
-        <el-form-item label="购买时间">
+        <el-form-item label="点灯时间">
           <el-date-picker
             v-model="dataForm.savebegindate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
+            type="year"
+            placeholder="选择年份"
           />
+
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -93,6 +93,7 @@ export default {
         vcname: '',
         phone: '',
         price: '',
+        savebegindate: '',
         sfz: ''
       },
       dialogFormVisible: false,
@@ -136,6 +137,7 @@ export default {
         cid: this.cems.id,
         vcname: '',
         phone: '',
+        savebegindate: '2020',
         price: '100'
       }
     },

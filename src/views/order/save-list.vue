@@ -9,7 +9,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加寄存信息</el-button>
     </div>
-    <el-dialog class="dialog" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
+    <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
         <!-- <el-form-item label="联系人" prop="link_name">
           <el-select v-model="dataForm.link_name" clearable placeholder="请选择" style="width:150px">
@@ -91,6 +91,19 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="220">
+        <template slot-scope="scope">
+          <template v-if="scope.row.save_status == 1">
+            <el-button v-if="scope.row.order_state == 1" type="warning" size="mini" @click="handlePay(scope.row)">付款</el-button>
+            <el-button v-else type="success" size="mini" @click="handleGo(scope.row)">取走</el-button>
+            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          </template>
+          <template v-else>
+            <el-button type="info" size="mini" plain disabled>已完结</el-button>
+          </template>
+        </template>
+      </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
@@ -108,6 +121,10 @@ export default {
       listLoading: true,
       dialogFormVisible: false,
       dialogStatus: '',
+      textMap: {
+        update: '编辑',
+        create: '创建'
+      },
       address: [{
         id: '常青园',
         link_name: '常青园'
@@ -163,7 +180,7 @@ export default {
     },
     handleCreate() {
       this.resetForm()
-      this.dialogStatus = '创建'
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -191,6 +208,81 @@ export default {
         }
       })
     },
+    handleDelete(row) {
+      deleteSave(row)
+        .then(res => {
+          this.$notify.success({
+            title: '成功',
+            message: '删除寄存信息成功'
+          })
+          const index = this.list.indexOf(row)
+          this.list.splice(index, 1)
+        })
+        .catch(res => {
+          this.$notify.error({
+            title: '失败',
+            message: res.msg
+          })
+        })
+    },
+    handlePay(row) {
+      this.$confirm('付款此订单后寄存信息将无法修改和删除, 是否继续?', '付款操作', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'confirmTop'
+      }).then(() => {
+        const data = { id: row.id }
+        PaySave(data)
+          .then(res => {
+            this.$notify.success({
+              title: '成功',
+              message: '付款服务成功'
+            })
+            this.getList()
+          })
+          .catch(res => {
+            this.$notify.error({
+              title: '失败',
+              message: res.msg
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+    },
+    handleGo(row) {
+      this.$confirm('确定取走?', '取走操作', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'confirmTop'
+      }).then(() => {
+        row.save_status = 2
+        updateSave(row)
+          .then((res) => {
+            this.getList()
+            this.$notify.success({
+              title: '成功',
+              message: '已取走'
+            })
+          })
+          .catch(res => {
+            this.$notify.error({
+              title: '失败',
+              message: res
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+    },
     resetForm() {
       this.dataForm = {
         link_name: '',
@@ -202,7 +294,32 @@ export default {
       }
     },
     updateData() {
-
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          updateSave(this.dataForm)
+            .then((res) => {
+              // for (const v of this.list) {
+              //   if (v.id === res.data.id) {
+              //     const index = this.list.indexOf(v)
+              //     this.list.splice(index, 1, res.data)
+              //     break
+              //   }
+              // }
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify.success({
+                title: '成功',
+                message: '更新寄存信息成功'
+              })
+            })
+            .catch(res => {
+              this.$notify.error({
+                title: '失败',
+                message: res
+              })
+            })
+        }
+      })
     },
     handleFilter() {
       this.listQuery.page = 1

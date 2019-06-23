@@ -2,8 +2,8 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
-      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入服务名称" />
+      <!-- <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
@@ -32,7 +32,7 @@
         placeholder="结束日期"
         format="yyyy 年 MM 月 dd 日"
         value-format="yyyy-MM-dd"
-      />
+      /> -->
       <!-- <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
       </el-select> -->
@@ -45,7 +45,7 @@
       <el-table-column align="center" label="墓穴位置" prop="seatname" width="200" />
       <el-table-column align="center" label="墓位类型" prop="typename" width="100" />
       <el-table-column align="center" label="墓穴样式" prop="stylename" width="100" />
-      <el-table-column align="center" label="使用人姓名" prop="buryname" width="200" />
+      <el-table-column align="center" label="使用人姓名" prop="buryname" width="300" />
       <el-table-column align="center" label="服务项目" prop="sell_title" />
       <el-table-column align="center" label="单价" prop="unit_price" width="100" />
       <el-table-column align="center" label="数量" prop="amount" width="80" />

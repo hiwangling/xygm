@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.type_name" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search">查找</el-button>
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
     <div class="manage-tag">
       <el-tag v-for="(value,item,idx) in num" :key="idx" :class="item | getNum" style="margin-left:5px">{{ item | getNumtxt }}({{ value }})</el-tag>
@@ -110,6 +110,10 @@ export default {
     },
     handleClick(tab) {
       this.changeOrders(tab.index)
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
     },
     v() {
       this.getList()

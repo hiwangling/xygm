@@ -14,29 +14,9 @@ const orderRouter = {
       name: 'VueReserveList',
       component: () => import('@/views/order/reserve-list'),
       meta: {
-        title: '预定订单',
+        title: '预定管理',
         noCache: true,
         perms: ['GET /api/v1/reserve/list']
-      }
-    },
-    {
-      path: 'cemetery-list',
-      name: 'VueCemeteryList',
-      component: () => import('@/views/order/cemetery-list'),
-      meta: {
-        title: '公墓订单',
-        noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
-      }
-    },
-    {
-      path: 'service-list',
-      name: 'VueServiceList',
-      component: () => import('@/views/order/service-list'),
-      meta: {
-        title: '服务订单',
-        noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }
     },
     {
@@ -47,6 +27,16 @@ const orderRouter = {
         title: '寄存管理',
         noCache: true,
         perms: ['GET /api/v1/save/list']
+      }
+    },
+    {
+      path: 'lamp-list',
+      name: 'VueLamp',
+      component: () => import('@/views/order/lamp-list'),
+      meta: {
+        title: '点灯管理',
+        noCache: true,
+        perms: ['GET /api/v1/lamp/list']
       }
     },
     {

@@ -51,13 +51,13 @@
       <el-table-column align="center" label="电话" prop="phone" />
       <el-table-column align="center" label="购墓时间" prop="order_begin" />
       <el-table-column align="center" label="实收价格" prop="sum_price" />
-      <!-- <el-table-column align="center" label="到期时间" prop="guoqi_status" width="120">
-        <template v-if="scope.row.guoqi_days" slot-scope="scope">
-          <el-tag :type="scope.row.guoqi_status | or_status">
-            {{ scope.row.guoqi_days }}
+      <el-table-column align="center" label="墓穴状态" prop="order_status" width="120">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.order_status | or_status">
+            已付款
           </el-tag>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>

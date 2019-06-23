@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div style="margin:0 0 10px 0">
+  <div class="app-container">
+    <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
@@ -50,7 +50,7 @@ export default {
       list: null,
       listlink: null,
       linkman_id: null,
-      listLoading: true,
+      listLoading: false,
       dialogStatus: '',
       dataForm: {
         cid: '',
@@ -58,6 +58,9 @@ export default {
         order_begin: '',
         order_end: '',
         price: ''
+      },
+      listQuery: {
+        keyword: ''
       },
       dialogFormVisible: false,
       textMap: {
@@ -101,6 +104,9 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
+
+    },
+    handleFilter() {
 
     },
     updateData() {
