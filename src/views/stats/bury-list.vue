@@ -42,28 +42,23 @@
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="订单号" prop="order_no" />
-      <el-table-column align="center" label="墓穴位置" prop="seatname" />
+      <el-table-column align="center" label="墓园" prop="garden_name" />
+      <el-table-column align="center" label="墓区" prop="area_name" />
       <el-table-column align="center" label="墓位类型" prop="stylename" />
       <el-table-column align="center" label="样式" prop="typename" />
       <el-table-column align="center" label="使用人" prop="buryname" />
+      <el-table-column align="center" label="性别" prop="sex" />
       <el-table-column align="center" label="购买人" prop="buyer_name" />
-      <el-table-column align="center" label="电话" prop="phone" />
-      <el-table-column align="center" label="购墓时间" prop="order_begin" />
-      <el-table-column align="center" label="实收价格" prop="sum_price" />
-      <el-table-column align="center" label="墓穴状态" prop="order_status" width="120">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.order_status | or_status">
-            已销售
-          </el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="出生日期" prop="birth" />
+      <el-table-column align="center" label="死亡日期" prop="death" />
+      <el-table-column align="center" label="安葬日期" prop="bury" />
+
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
 </template>
 <script>
-import { CemeteryOrderList, export_order_stat } from '@/api/order'
+import { az_bury_list, export_bury_stat } from '@/api/stats'
 // import { get_name } from '@/api/cemetery'
 import { get_areas } from '@/api/cemetery'
 import Pagination from '@/components/Pagination'
@@ -90,7 +85,6 @@ export default {
         q_id: '',
         type_id: '',
         style_id: '',
-        usestatus: '3',
         begindate: '',
         enddate: '',
         sort: 'add_time',
@@ -108,7 +102,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      CemeteryOrderList(this.listQuery)
+      az_bury_list(this.listQuery)
         .then(res => {
           this.list = res.data.data
           this.total = res.data.total || 0
@@ -137,7 +131,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      export_order_stat(this.listQuery)
+      export_bury_stat(this.listQuery)
         .then(res => {
           this.export_list = res.data
       import('@/vendor/Export2Excel').then(excel => {

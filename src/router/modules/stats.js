@@ -14,7 +14,7 @@ const statsRouter = {
       name: 'VueCemeteryList',
       component: () => import('@/views/stats/cemetery-list'),
       meta: {
-        title: '公墓统计',
+        title: '购墓统计',
         noCache: true,
         perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }
@@ -25,6 +25,26 @@ const statsRouter = {
       component: () => import('@/views/stats/service-list'),
       meta: {
         title: '服务统计',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'bury-list',
+      name: 'VueBuryList',
+      component: () => import('@/views/stats/bury-list'),
+      meta: {
+        title: '安葬统计',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
+      path: 'old-list',
+      name: 'VueOldList',
+      component: () => import('@/views/stats/old-list'),
+      meta: {
+        title: '老数据导入',
         noCache: true,
         perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
       }

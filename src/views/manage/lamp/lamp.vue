@@ -61,14 +61,21 @@
         <el-form-item label="身份证" prop="sfz">
           <el-input v-model="dataForm.sfz" />
         </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+            v-model="dataForm.begindate"
+            type="date"
+            placeholder="选择年份"
+          />
+        </el-form-item>
         <el-form-item label="点灯时间">
           <el-date-picker
             v-model="dataForm.savebegindate"
             type="year"
             placeholder="选择年份"
           />
-
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -94,6 +101,7 @@ export default {
         phone: '',
         price: '',
         savebegindate: '',
+        begindate: '',
         sfz: ''
       },
       dialogFormVisible: false,
@@ -138,6 +146,7 @@ export default {
         vcname: '',
         phone: '',
         savebegindate: '2020',
+        begindate: new Date(),
         price: '100'
       }
     },
