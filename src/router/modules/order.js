@@ -30,16 +30,6 @@ const orderRouter = {
       }
     },
     {
-      path: 'lamp-list',
-      name: 'VueLamp',
-      component: () => import('@/views/order/lamp-list'),
-      meta: {
-        title: '点灯管理',
-        noCache: true,
-        perms: ['GET /api/v1/lamp/list']
-      }
-    },
-    {
       path: 'service-handle',
       name: 'VueServiceHandle',
       component: () => import('@/views/order/service-handle'),

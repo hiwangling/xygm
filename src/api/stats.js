@@ -28,7 +28,20 @@ export function export_bury_stat(query) {
     params: query
   })
 }
-
+export function buy_lightup_list(query) {
+  return request({
+    url: '/stat/buy_lightup_list',
+    method: 'get',
+    params: query
+  })
+}
+export function export_lightup_stat(query) {
+  return request({
+    url: '/stat/export_lightup_stat',
+    method: 'get',
+    params: query
+  })
+}
 export function get_olddata(data) {
   return request({
     url: '/cemetery/get_olddata',

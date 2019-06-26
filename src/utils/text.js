@@ -12,70 +12,70 @@ export default {
   initHori: [{
     t: '父',
     s: true,
-    e: false,
+    e: true,
     h: true,
     l: 150,
     p: 100
   }, {
     t: '母',
     s: true,
-    e: false,
+    e: true,
     h: true,
     l: 150,
     p: 150
   }, {
     t: '孝男',
     s: false,
-    e: false,
+    e: true,
     h: true,
     l: 130,
     p: 220
   }, {
     t: '媳',
     s: false,
-    e: false,
+    e: true,
     h: true,
     l: 300,
     p: 220
   }, {
     t: '孙',
     s: false,
-    e: false,
+    e: true,
     h: true,
     l: 500,
     p: 220
   }, {
     t: '女',
     s: false,
-    e: false,
+    e: true,
     h: true,
     l: 150,
     p: 300
   }, {
     t: '婿',
     s: false,
-    e: false,
+    e: true,
     h: true,
     l: 300,
     p: 300
   }, {
     t: '年',
     s: true,
-    e: false,
+    e: true,
     h: true,
     l: 580,
     p: 430
   }, {
     t: '月',
     s: true,
-    e: false,
+    e: true,
     h: true,
     l: 660,
     p: 430
   }, {
     t: '日立',
     s: true,
-    e: false,
+    e: true,
     h: true,
     l: 730,
     p: 430
@@ -83,98 +83,98 @@ export default {
   initVert: [{
     t: '先',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 45
   }, {
     t: '生于',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 80
   }, {
     t: '母',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 720,
     p: 60
   }, {
     t: '父',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 795,
     p: 60
   }, {
     t: '年',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 180
   }, {
     t: '月',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 245
   }, {
     t: '日卒于',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 320
   }, {
     t: '年',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 435
   }, {
     t: '月',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 500
   }, {
     t: '日',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 755,
     p: 560
   }, {
     t: '先',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 500,
     p: 45
   }, {
     t: '母',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 460,
     p: 70
   }, {
     t: '父',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 540,
     p: 70
   }, {
     t: '',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 540,
     p: 105,
@@ -182,7 +182,7 @@ export default {
   }, {
     t: '',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 460,
     p: 105,
@@ -190,77 +190,77 @@ export default {
   }, {
     t: '大人之墓',
     s: true,
-    e: false,
+    e: true,
     h: false,
     l: 500,
     p: 270
   }, {
     t: '孝',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 255,
     p: 45
   }, {
     t: '女',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 210,
     p: 70
   }, {
     t: '男',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 300,
     p: 70
   }, {
     t: '年',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 125,
     p: 365
   }, {
     t: '月',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 125,
     p: 430
   }, {
     t: '日立',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 125,
     p: 500
   }, {
     t: '',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 210,
     p: 105
   }, {
     t: '',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 240,
     p: 105
   }, {
     t: '',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 270,
     p: 105
   }, {
     t: '',
     s: false,
-    e: false,
+    e: true,
     h: false,
     l: 300,
     p: 105

@@ -41,7 +41,6 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        q_id: 11,
         pid: undefined,
         sort: 'add_time',
         order: 'desc'

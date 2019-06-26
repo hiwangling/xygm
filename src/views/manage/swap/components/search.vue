@@ -8,9 +8,9 @@
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable class="filter-item">
         <el-option v-for="item in cemetery.a" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
-      <!-- <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable class="filter-item">
+      <el-select v-model="listQuery.type_id" placeholder="选择类型" clearable class="filter-item">
         <el-option v-for="item in cemetery.t" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select> -->
+      </el-select>
       <el-select v-model="listQuery.style_id" placeholder="选择样式" clearable class="filter-item">
         <el-option v-for="item in cemetery.s" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
@@ -33,7 +33,7 @@ import { page, vuexData } from '@/utils/mixin'
 import Pagination from '@/components/Pagination'
 import { listGrave } from '@/api/grave'
 import { get_areas } from '@/api/cemetery'
-import { listdead } from '@/api/dead'
+// import { listdead } from '@/api/dead'
 import { listType } from '@/api/type'
 export default {
   components: { Pagination },
@@ -71,19 +71,19 @@ export default {
         .then(res => {
           this.cemeteryType = res.data
         })
-      const data = { cid: this.cems.id }
-      await listdead(data)
-        .then(res => {
-          if (res.data.length) {
-            let obj = {}
-            if (this.cemeteryType != null) {
-              obj = this.cemeteryType.find((item) => {
-                return item.hrm === res.data[0].type_id
-              })
-            }
-            this.listQuery.type_id = obj.id || null
-          }
-        })
+      // const data = { cid: this.cems.id }
+      // await listdead(data)
+      //   .then(res => {
+      //     if (res.data.length) {
+      //       let obj = {}
+      //       if (this.cemeteryType != null) {
+      //         obj = this.cemeteryType.find((item) => {
+      //           return item.hrm === res.data[0].type_id
+      //         })
+      //       }
+      //       this.listQuery.type_id = obj.id || null
+      //     }
+      //   })
       await listGrave(this.listQuery)
         .then(res => {
           this.list = res.data.data

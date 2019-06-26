@@ -10,8 +10,8 @@
     <el-row :gutter="20">
       <el-col v-for="(item,value) in list" :key="value" :span="2" :class="item.usestatus | getlist">
         <div style="height:100%;" @click="CreateCemetery(item)">
-          <p>墓号：{{ item.vno }}</p>
-          <p>墓型：{{ item.cemetery_type.type_name }}</p>
+          <p>{{ item.cname }}</p>
+          <!-- <p>墓型：{{ item.cemetery_type.type_name }}</p> -->
         </div>
       </el-col>
     </el-row>

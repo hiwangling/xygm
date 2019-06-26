@@ -87,7 +87,6 @@ export default {
       }
       get_mentstatus(data)
         .then(res => {
-          console.log(res.data)
           this.status = res.data !== '0'
         })
       getsevices(data)
@@ -158,6 +157,7 @@ export default {
     },
     handleMonumen() {
       this.dialogFormVisible = true
+      this.$refs.get.setBorder()
     },
     createDate() {
       this.$refs.get.getData()

@@ -30,6 +30,16 @@ const statsRouter = {
       }
     },
     {
+      path: 'lamp-list',
+      name: 'VueLampList',
+      component: () => import('@/views/stats/lamp-list'),
+      meta: {
+        title: '点灯统计',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
       path: 'bury-list',
       name: 'VueBuryList',
       component: () => import('@/views/stats/bury-list'),

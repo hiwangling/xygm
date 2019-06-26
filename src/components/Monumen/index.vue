@@ -63,6 +63,7 @@ export default {
     cems: {
       handler(val) {
         this.init()
+        this.setBorder()
       },
       immediate: true
     }
@@ -141,8 +142,33 @@ export default {
       }
       this.hori.push(C)
     },
-    print() {
-      this.$print(this.$refs.print)
+    async print() {
+      await this.clearBorder()
+      await this.$print(this.$refs.print)
+    },
+    setBorder() {
+      this.vert.forEach((v, k) => {
+        if (!v.e) {
+          v.e = true
+        }
+      })
+      this.hori.forEach((v, k) => {
+        if (!v.e) {
+          v.e = true
+        }
+      })
+    },
+    clearBorder() {
+      this.vert.forEach((v, k) => {
+        if (v.e) {
+          v.e = false
+        }
+      })
+      this.hori.forEach((v, k) => {
+        if (v.e) {
+          v.e = false
+        }
+      })
     },
     rest() {
       if (this.flag) {

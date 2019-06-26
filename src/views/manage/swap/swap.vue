@@ -45,6 +45,7 @@
 <script>
 import SwapSearch from './components/search'
 import { change_cemetery, historyinfo } from '@/api/historyinfo'
+import { listlink } from '@/api/link'
 import { listbuy } from '@/api/buy'
 import { page, vuexData } from '@/utils/mixin'
 export default {
@@ -53,7 +54,8 @@ export default {
   data() {
     return {
       list: null,
-      index: 6,
+      index: 4,
+      links: [],
       newname: '',
       listLoading: true,
       dialogStatus: '',
@@ -148,6 +150,15 @@ export default {
       this.$nextTick(() => {
         this.$refs.child.show()
       })
+    },
+    link() {
+      const data = {
+        cid: this.cems.id
+      }
+      listlink(data)
+        .then(res => {
+          this.listlink = res.data
+        })
     },
     getname(v) {
       this.newname = v.y_name + v.cemetery_classify.type_name + v.vno + v.cname + ' / ' + v.sellprice + ' 元'

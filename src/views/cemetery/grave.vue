@@ -39,10 +39,11 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="价格" prop="sellprice" />
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="200">
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="240">
         <template slot-scope="{row}">
           <el-button v-permission="['POST /api/v1/cemetery/edit']" type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
           <el-button v-permission="['GET /api/v1/cemetery/del']" type="danger" size="mini" @click="handleDelete(row)">删除</el-button>
+          <el-button v-if="row.usestatus == 5" v-permission="['GET /api/v1/cemetery/del']" type="success" size="mini" @click="handleExcep(row)">处理</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -266,6 +267,9 @@ export default {
             })
         }
       })
+    },
+    handleExcep(row) {
+
     },
     handleUpdate(row) {
       this.garen_id = row.garden_id
