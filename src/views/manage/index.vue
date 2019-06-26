@@ -1,43 +1,47 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-select v-model="listQuery.pid" placeholder="选择墓园" clearable style="width: 160px" class="filter-item">
-        <el-option v-for="item in gardens" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select> -->
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
-    <el-row :gutter="20" class="area">
-      <el-col v-for="(item, index) in list" :key="index" :span="5">
-        <router-link :to="'/manage/list/'+item.id" class="">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{ item.type_name }} ({{ item.y_name }})</span>
-            </div>
-            <div class="component-item">
-              <img :src="item.image_url" alt="" class="image">
-            </div>
-            <div class="manage-tag">
-              <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;">{{ items | getNumtxt }}({{ value }})</el-tag>
-            </div>
-          </el-card>
-        </router-link>
-      </el-col>
-    </el-row>
+    <grave v-show="flag" ref="child" />
+    <div v-show="!flag" class="main">
+      <el-row :gutter="20" class="area">
+        <el-col v-for="(item, index) in list" :key="index" :span="5">
+          <router-link :to="'/manage/list/'+item.id" class="">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span>{{ item.type_name }} ({{ item.y_name }})</span>
+              </div>
+              <div class="component-item">
+                <img :src="item.image_url" alt="" class="image">
+              </div>
+              <div class="manage-tag">
+                <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;">{{ items | getNumtxt }}({{ value }})</el-tag>
+              </div>
+            </el-card>
+          </router-link>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 <script>
 import { listArea } from '@/api/area'
 import { listGrave } from '@/api/grave'
 import { get_gardens } from '@/api/cemetery'
+import grave from './list'
 export default {
   name: 'VueList',
+  components: { grave },
   data() {
     return {
       list: null,
       total: 0,
+      sreach: null,
       listLoading: true,
       gardens: null,
+      flag: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -73,13 +77,25 @@ export default {
         })
     },
     handleFilter() {
-      this.listQuery.page = 1
-      listGrave(this.listQuery)
-        .then(res => {
-          this.list = res.data.data
-          this.total = res.data.total || 0
-          this.listLoading = false
-        })
+      if (this.listQuery.keyword === '') {
+        this.flag = false
+      } else {
+        this.listQuery.page = 1
+        listGrave(this.listQuery)
+          .then(res => {
+            this.sreach = res.data.data
+            this.flag = true
+            const filter = {
+              flag: true,
+              keyword: this.listQuery.keyword,
+              q_id: ''
+            }
+            this.$refs.child.handleFilters(filter)
+          })
+      }
+    },
+    CreateCemetery(row) {
+
     }
   }
 }

@@ -50,6 +50,16 @@ const statsRouter = {
       }
     },
     {
+      path: 'data-list',
+      name: 'VueDataList',
+      component: () => import('@/views/stats/data-list'),
+      meta: {
+        title: '数据统计',
+        noCache: true,
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+      }
+    },
+    {
       path: 'old-list',
       name: 'VueOldList',
       component: () => import('@/views/stats/old-list'),

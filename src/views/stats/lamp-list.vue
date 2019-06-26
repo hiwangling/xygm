@@ -18,10 +18,10 @@
         placeholder="点灯时间"
       />
       <el-select v-model="listQuery.pay_type" placeholder="支付类型" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in pay_type" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in pay_type" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-select v-model="listQuery.isvoice" placeholder="是否开票" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in isvoice" :key="item.id" :label="item.type_name" :value="item.id" />
+        <el-option v-for="item in isvoice" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <!-- <el-button v-permission="['POST /api/v1/cemetery/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button> -->

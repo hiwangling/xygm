@@ -27,11 +27,14 @@
         <el-form-item label="电话">
           <el-input v-model="dataForm.phone" />
         </el-form-item>
+        <el-form-item label="使用人">
+          <el-input v-model="dataForm.bury" />
+        </el-form-item>
         <el-form-item label="开始时间">
           <el-date-picker
             v-model="dataForm.savebegindate"
             type="date"
-            value-format="yyyy-MM-dd"
+            value-format="timestamp"
             placeholder="选择日期"
           />
         </el-form-item>
@@ -39,8 +42,9 @@
           <el-date-picker
             v-model="dataForm.saveenddate"
             type="date"
-            value-format="yyyy-MM-dd"
+            value-format="timestamp"
             placeholder="选择日期"
+            @change="choose"
           />
         </el-form-item>
         <el-form-item label="寄存地点">
@@ -53,8 +57,11 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="寄存月数">
+          <el-input v-model="dataForm.days" :disabled="true" />
+        </el-form-item>
         <el-form-item label="寄存费用">
-          <el-input v-model="dataForm.saveprice" />
+          <span style="color: red">{{ dataForm.saveprice }} 元</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,8 +133,8 @@ export default {
         create: '创建'
       },
       address: [{
-        id: '常青园',
-        link_name: '常青园'
+        id: '仙园公墓',
+        link_name: '仙园公墓'
       }],
       save: [{
         id: 1,
@@ -139,10 +146,12 @@ export default {
       dataForm: {
         link_name: '',
         phone: '',
+        bury: '',
         savebegindate: '',
         saveenddate: '',
         saveareaaddr: '',
-        saveprice: ''
+        saveprice: '',
+        days: ''
       },
       listQuery: {
         page: 1,
@@ -287,11 +296,20 @@ export default {
       this.dataForm = {
         link_name: '',
         phone: '',
-        savebegindate: '',
+        bury: '',
+        savebegindate: new Date(),
         saveenddate: '',
         saveareaaddr: '',
-        saveprice: ''
+        saveprice: 6,
+        days: 1
       }
+    },
+    choose() {
+      const start = this.dataForm.savebegindate
+      const end = this.dataForm.saveenddate
+      this.dataForm.days = Math.ceil(((end - start) / (60 * 60 * 24 * 1000)) / 30)
+      this.dataForm.days = this.dataForm.days > 0 ? this.dataForm.days : 1
+      this.dataForm.saveprice = this.dataForm.days * 6
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {

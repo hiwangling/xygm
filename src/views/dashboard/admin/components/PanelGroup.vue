@@ -46,7 +46,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            待办事项
+            待办服务
           </div>
           <count-to :start-val="0" :end-val="count" :duration="3600" class="card-panel-num" />
         </div>

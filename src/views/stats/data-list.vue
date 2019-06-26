@@ -38,6 +38,9 @@
       </el-select> -->
       <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;">
+        本月统计
+      </el-checkbox>
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
@@ -72,6 +75,7 @@ export default {
       total: 0,
       listLoading: true,
       area: null,
+      showReviewer: '',
       garen_id: '',
       downloadLoading: false,
       listQuery: {

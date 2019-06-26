@@ -1,17 +1,16 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div v-show="!filter" class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入墓名或者墓号" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilters">查找</el-button>
     </div>
-    <div class="manage-tag">
+    <div v-show="!filter" class="manage-tag">
       <el-tag v-for="(value,item,idx) in num" :key="idx" :class="item | getNum" style="margin-left:5px">{{ item | getNumtxt }}({{ value }})</el-tag>
     </div>
     <el-row :gutter="20">
       <el-col v-for="(item,value) in list" :key="value" :span="2" :class="item.usestatus | getlist">
         <div style="height:100%;" @click="CreateCemetery(item)">
           <p>{{ item.cname }}</p>
-          <!-- <p>墓型：{{ item.cemetery_type.type_name }}</p> -->
         </div>
       </el-col>
     </el-row>
@@ -45,6 +44,7 @@ export default {
       num: null,
       total: 0,
       cid: '',
+      filter: false,
       activeName: 'reserve',
       listLoading: true,
       listQuery: {
@@ -111,8 +111,15 @@ export default {
     handleClick(tab) {
       this.changeOrders(tab.index)
     },
-    handleFilter() {
+    handleFilters(filter) {
       this.listQuery.page = 1
+      if (filter.flag) {
+        this.listQuery.q_id = filter.q_id
+        this.listQuery.keyword = filter.keyword
+        this.filter = filter.flag
+      } else {
+        this.listQuery.q_id = this.$route.params.id
+      }
       this.getList()
     },
     v() {
