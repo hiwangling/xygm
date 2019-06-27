@@ -7,14 +7,14 @@
     <grave v-show="flag" ref="child" />
     <div v-show="!flag" class="main">
       <el-row :gutter="20" class="area">
-        <el-col v-for="(item, index) in list" :key="index" :span="5">
+        <el-col v-for="(item, index) in list" :key="index" :span="4">
           <router-link :to="'/manage/list/'+item.id" class="">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span>{{ item.type_name }} ({{ item.y_name }})</span>
+                <span style="font-size:16px">{{ item.type_name }}</span>
               </div>
               <div class="component-item">
-                <img :src="item.image_url" alt="" class="image">
+                <img :src="item.image_url === url ? gmurl : item.image_url" alt="" class="image">
               </div>
               <div class="manage-tag">
                 <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;">{{ items | getNumtxt }}({{ value }})</el-tag>
@@ -38,6 +38,8 @@ export default {
     return {
       list: null,
       total: 0,
+      url: process.env.VUE_APP_BASE,
+      gmurl: 'http://www.iu95522.com/attachs/homephoto/201512/20151208_A575C898CB8EE138978DC03B392F5A18.png',
       sreach: null,
       listLoading: true,
       gardens: null,
@@ -122,5 +124,7 @@ text-align: center;
   margin-right: 10px;
   margin-bottom:5px
   }
-
+.box-card{
+  margin-bottom: 10px;
+}
  </style>

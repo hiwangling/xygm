@@ -134,7 +134,7 @@
   </div>
 </template>
 <script>
-import { listGrave, createGrave, updateGrave, deleteGrave } from '@/api/grave'
+import { listGrave, createGrave, updateGrave, deleteGrave, update_usestatus } from '@/api/grave'
 import { get_areas } from '@/api/cemetery'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -269,7 +269,22 @@ export default {
       })
     },
     handleExcep(row) {
-
+      const data = { id: row.id }
+      update_usestatus(data)
+        .then(res => {
+          console.log(res.data)
+          this.getList()
+          this.$notify.success({
+            title: '成功',
+            message: '操作成功'
+          })
+        })
+        .catch(res => {
+          this.$notify.error({
+            title: '失败',
+            message: res.msg
+          })
+        })
     },
     handleUpdate(row) {
       this.garen_id = row.garden_id

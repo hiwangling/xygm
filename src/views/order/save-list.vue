@@ -28,7 +28,7 @@
           <el-input v-model="dataForm.phone" />
         </el-form-item>
         <el-form-item label="使用人">
-          <el-input v-model="dataForm.bury" />
+          <el-input v-model="dataForm.deathname" />
         </el-form-item>
         <el-form-item label="开始时间">
           <el-date-picker
@@ -58,7 +58,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="寄存月数">
-          <el-input v-model="dataForm.days" :disabled="true" />
+          <el-input v-model="dataForm.save_month" :disabled="true" />
         </el-form-item>
         <el-form-item label="寄存费用">
           <span style="color: red">{{ dataForm.saveprice }} 元</span>
@@ -74,6 +74,7 @@
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="寄存人" prop="link_name" width="100" />
       <el-table-column align="center" label="电话" prop="phone" width="120" />
+      <el-table-column align="center" label="使用人" prop="deathname" width="120" />
       <el-table-column align="center" label="开始时间" prop="savebegindate" width="120" />
       <el-table-column align="center" label="结束时间" prop="saveenddate" width="120" />
       <el-table-column align="center" label="费用" prop="saveprice" width="100" />
@@ -118,6 +119,7 @@
 <script>
 import { updateSave, createSave, listSave, deleteSave, PaySave } from '@/api/save'
 import Pagination from '@/components/Pagination'
+import { parseTime } from '@/utils'
 export default {
   name: 'VueSaveList',
   components: { Pagination },
@@ -146,12 +148,14 @@ export default {
       dataForm: {
         link_name: '',
         phone: '',
-        bury: '',
+        address: '',
+        deathname: '',
         savebegindate: '',
         saveenddate: '',
         saveareaaddr: '',
+        unitprice: 5,
         saveprice: '',
-        days: ''
+        save_month: ''
       },
       listQuery: {
         page: 1,
@@ -196,6 +200,8 @@ export default {
       })
     },
     createData() {
+      this.dataForm.savebegindate = parseTime(this.dataForm.savebegindate, '{y}-{m}-{d}')
+      this.dataForm.saveenddate = parseTime(this.dataForm.saveenddate, '{y}-{m}-{d}')
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           createSave(this.dataForm)
@@ -294,22 +300,24 @@ export default {
     },
     resetForm() {
       this.dataForm = {
-        address: '',
+        link_name: '',
         phone: '',
-        linkman_name: '',
-        savebegindate: new Date(),
+        address: '无',
+        deathname: '',
+        savebegindate: Date.parse(new Date()),
         saveenddate: '',
         saveareaaddr: '',
+        unitprice: 5,
         saveprice: 5,
-        days: 1
+        save_month: 1
       }
     },
     choose() {
       const start = this.dataForm.savebegindate
       const end = this.dataForm.saveenddate
-      this.dataForm.days = Math.ceil(((end - start) / (60 * 60 * 24 * 1000)) / 30)
-      this.dataForm.days = this.dataForm.days > 0 ? this.dataForm.days : 1
-      this.dataForm.saveprice = this.dataForm.days * 5
+      this.dataForm.save_month = Math.ceil(((end - start) / (60 * 60 * 24 * 1000)) / 30)
+      this.dataForm.save_month = this.dataForm.save_month > 0 ? this.dataForm.save_month : 1
+      this.dataForm.saveprice = this.dataForm.save_month * 5
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {

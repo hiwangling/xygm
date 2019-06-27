@@ -31,3 +31,12 @@ export function deleteGrave(query) {
     params: query
   })
 }
+
+export function update_usestatus(query) {
+  return request({
+    url: '/cemetery/update_cemetery_usestatus',
+    method: 'get',
+    params: query
+  })
+}
+
