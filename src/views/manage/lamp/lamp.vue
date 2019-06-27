@@ -61,7 +61,7 @@
           />
         </el-form-item>
         <el-form-item label="*注:">
-          <div style="color:red;font-size:13px"> 选择2019年代表2019年腊月二十六——2020年正月十五点灯</div>
+          <div style="color:red;font-size:13px"> 选择2020年代表年2020年春节点灯</div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

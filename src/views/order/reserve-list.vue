@@ -40,7 +40,6 @@ export default {
         page: 1,
         limit: 20,
         keyword: undefined,
-        save_status: '',
         sort: 'add_time',
         order: 'desc'
       }

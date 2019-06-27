@@ -110,6 +110,9 @@ export default {
         vcnote: ''
       }
     },
+    v() {
+      this.$emit('v')
+    },
     createData() {
       this.dataForm.cem_name = this.cname
       this.$refs['dataForm'].validate(valid => {

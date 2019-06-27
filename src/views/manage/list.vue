@@ -5,17 +5,19 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilters">查找</el-button>
     </div>
     <div v-show="!filter" class="manage-tag">
-      <el-tag v-for="(value,item,idx) in num" :key="idx" :class="item | getNum" style="margin-left:5px">{{ item | getNumtxt }}({{ value }})</el-tag>
+      <el-tag v-for="(value,item,idx) in num" :key="idx" :class="item | getNum" style="margin-left:5px" @click="handleFilterTag(item)">{{ item | getNumtxt }}({{ value }})</el-tag>
     </div>
     <el-row :gutter="20">
       <el-col v-for="(item,value) in list" :key="value" :span="2" :class="item.usestatus | getlist">
         <div style="height:100%;" @click="CreateCemetery(item)">
           <p>{{ item.cname }}</p>
+          <p>{{ item.muzhu_name }}</p>
+          <p>({{ item.type_id == 1 ? '单墓' : '合墓' }})</p>
         </div>
       </el-col>
     </el-row>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-    <el-dialog id="cemetery" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" @open="activeName = 'reserve'">
+    <el-dialog id="cemetery" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" @open="activeName = 'sell'">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane v-for="(item,index) in tab" :key="index" :label="item.label" :name="item.name"><component :is="item.name" @v="v" /></el-tab-pane>
       </el-tabs>
@@ -45,12 +47,13 @@ export default {
       total: 0,
       cid: '',
       filter: false,
-      activeName: 'reserve',
+      activeName: 'sell',
       listLoading: true,
       listQuery: {
         q_id: this.$route.params.id,
         page: 1,
-        limit: 20,
+        limit: 40,
+        usestatus: '',
         keyword: undefined,
         sort: 'add_time',
         order: 'desc'
@@ -118,8 +121,13 @@ export default {
         this.listQuery.keyword = filter.keyword
         this.filter = filter.flag
       } else {
+        this.listQuery.usestatus = ''
         this.listQuery.q_id = this.$route.params.id
       }
+      this.getList()
+    },
+    handleFilterTag(item) {
+      this.listQuery.usestatus = item
       this.getList()
     },
     v() {
@@ -132,6 +140,9 @@ export default {
 <style>
 #cemetery .el-dialog{
   width: 900px;
+}
+.manage-tag span{
+  cursor:pointer
 }
 </style>
 

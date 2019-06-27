@@ -48,14 +48,8 @@ export default {
       downloadLoading: false,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 300,
         keyword: undefined,
-        y_id: '',
-        q_id: '',
-        type_id: '',
-        style_id: '',
-        begindate: '',
-        enddate: '',
         sort: 'add_time',
         order: 'desc'
       }
@@ -71,7 +65,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      get_olddata()
+      get_olddata(this.listQuery)
         .then(res => {
           this.list = res.data.data
           this.total = res.data.total || 0

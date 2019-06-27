@@ -17,7 +17,7 @@
                 <img :src="item.image_url === url ? gmurl : item.image_url" alt="" class="image">
               </div>
               <div class="manage-tag">
-                <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 2px;">{{ items | getNumtxt }}({{ value }})</el-tag>
+                <el-tag v-for="(value,items,idx) in item.num" :key="idx" size="small" :class="items | getNum" style="margin:5px 6px;">{{ items | getNumtxt }}({{ value }})</el-tag>
               </div>
             </el-card>
           </router-link>

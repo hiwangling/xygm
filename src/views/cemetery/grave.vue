@@ -3,9 +3,9 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
-      <el-select v-model="listQuery.garden_id " placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+      <!-- <el-select v-model="listQuery.garden_id " placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in area" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
@@ -66,7 +66,7 @@
           <el-input v-model="dataForm.orientation" />
         </el-form-item> -->
 
-        <el-form-item label="墓园选择" prop="garen_id">
+        <!-- <el-form-item label="墓园选择" prop="garen_id">
           <el-select v-model="dataForm.garen_id" clearable placeholder="请选择" @change="getarea()">
             <el-option
               v-for="item in cemetery.g"
@@ -75,7 +75,7 @@
               :value="item.id"
             />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="墓区选择" prop="classify_id">
           <el-select v-model="dataForm.classify_id" clearable placeholder="请选择">
             <el-option
@@ -193,6 +193,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      const data = { pid: 6 }
+      get_areas(data)
+        .then(res => {
+          this.area = res.data
+        })
       listGrave(this.listQuery)
         .then(res => {
           this.list = res.data.data
@@ -228,10 +233,10 @@ export default {
     },
     getarea() {
       const data = {
-        pid: this.garen_id || this.listQuery.garden_id
+        pid: 6
       }
-      this.listQuery.q_id = ''
-      this.dataForm.classify_id = ''
+      // this.listQuery.q_id = ''
+      // this.dataForm.classify_id = ''
       get_areas(data)
         .then(res => {
           this.area = res.data

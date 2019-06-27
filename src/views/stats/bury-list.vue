@@ -37,18 +37,17 @@
         <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
       </el-select> -->
       <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <!-- <el-button v-permission="['POST /api/v1/cemetery/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button> -->
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="墓园" prop="garden_name" />
       <el-table-column align="center" label="墓区" prop="area_name" />
-      <el-table-column align="center" label="墓位类型" prop="stylename" />
-      <el-table-column align="center" label="样式" prop="typename" />
+      <el-table-column align="center" label="墓号" prop="cem_name" />
+      <el-table-column align="center" label="类型" prop="stylename" width="80" />
       <el-table-column align="center" label="使用人" prop="buryname" />
       <el-table-column align="center" label="性别" prop="sex" />
-      <el-table-column align="center" label="购买人" prop="buyer_name" />
+      <el-table-column align="center" label="购买人" prop="link_name" />
+      <el-table-column align="center" label="电话" prop="phone" />
       <el-table-column align="center" label="出生日期" prop="birth" />
       <el-table-column align="center" label="死亡日期" prop="death" />
       <el-table-column align="center" label="安葬日期" prop="bury" />
