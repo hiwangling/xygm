@@ -294,13 +294,13 @@ export default {
     },
     resetForm() {
       this.dataForm = {
-        link_name: '',
+        address: '',
         phone: '',
-        bury: '',
+        linkman_name: '',
         savebegindate: new Date(),
         saveenddate: '',
         saveareaaddr: '',
-        saveprice: 6,
+        saveprice: 5,
         days: 1
       }
     },
@@ -309,7 +309,7 @@ export default {
       const end = this.dataForm.saveenddate
       this.dataForm.days = Math.ceil(((end - start) / (60 * 60 * 24 * 1000)) / 30)
       this.dataForm.days = this.dataForm.days > 0 ? this.dataForm.days : 1
-      this.dataForm.saveprice = this.dataForm.days * 6
+      this.dataForm.saveprice = this.dataForm.days * 5
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
