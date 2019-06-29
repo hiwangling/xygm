@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加点灯服务</el-button>
+      <el-button v-if="currentStatus != 1" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加点灯服务</el-button>
+      <el-button v-else type="info" plain disabled>点灯已锁定</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="订单号" prop="order_no" />
@@ -36,7 +37,7 @@
       </el-table-column>
     </el-table>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
-      <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="80px" style="margin-left:50px;">
+      <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="110px" style="margin-left:50px;">
         <el-form-item label="墓穴名称">
           <span class="tag">{{ cname }}</span>
         </el-form-item>
@@ -74,12 +75,13 @@
 </template>
 <script>
 import { lamplist, lampadd, lampdelete, lamppay } from '@/api/lamp'
-import { vuexData } from '@/utils/mixin'
+import { vuexData, page } from '@/utils/mixin'
 export default {
-  mixins: [vuexData],
+  mixins: [vuexData, page],
   data() {
     return {
       list: null,
+      index: 3,
       listLoading: true,
       dialogStatus: '',
       dataForm: {
@@ -97,6 +99,11 @@ export default {
     }
   },
   watch: {
+    order(val) {
+      if (val === this.index) {
+        this.getStatus()
+      }
+    },
     cems: {
       handler(val) {
         this.getList()

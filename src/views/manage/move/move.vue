@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div style="margin:0 0 10px 0">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加退迁服务</el-button>
+      <el-button v-if="currentStatus != 1" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加退迁服务</el-button>
+      <el-button v-else type="info" plain disabled>退迁已锁定</el-button>
     </div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" label="墓名" prop="old_name" />
@@ -43,12 +44,13 @@
 </template>
 <script>
 import { move_cemetery, historyinfo } from '@/api/historyinfo'
-import { vuexData } from '@/utils/mixin'
+import { vuexData, page } from '@/utils/mixin'
 export default {
-  mixins: [vuexData],
+  mixins: [vuexData, page],
   data() {
     return {
       list: null,
+      index: 5,
       listLoading: true,
       dialogStatus: '',
       dataForm: {
@@ -68,6 +70,11 @@ export default {
     }
   },
   watch: {
+    order(val) {
+      if (val === this.index) {
+        this.getStatus()
+      }
+    },
     cems: {
       handler(val) {
         this.getList()

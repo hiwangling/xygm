@@ -106,11 +106,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="行" prop="ix">
+        <el-form-item label="排" prop="ix">
           <el-input v-model="dataForm.ix" />
         </el-form-item>
-        <el-form-item label="排" prop="iy">
-          <el-input v-model="dataForm.iy" placeholder="请输入内容" />
+        <el-form-item label="号" prop="iy">
+          <el-input v-model="dataForm.iy" placeholder="1,10" />
         </el-form-item>
         <el-form-item label="价格" prop="sellprice">
           <el-input v-model="dataForm.sellprice" />
@@ -157,7 +157,7 @@ export default {
         sort: 'add_time',
         order: 'desc',
         keyword: '',
-        garden_id: '',
+        y_id: '',
         q_id: '',
         type_id: '',
         style_id: '',
@@ -192,6 +192,7 @@ export default {
   },
   methods: {
     getList() {
+      this.listQuery.y_id = this.garden_id
       this.listLoading = true
       const data = { pid: 6 }
       get_areas(data)

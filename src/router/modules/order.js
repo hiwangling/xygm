@@ -16,7 +16,7 @@ const orderRouter = {
       meta: {
         title: '预定管理',
         noCache: true,
-        perms: ['GET /api/v1/reserve/list']
+        perms: ['GET /api/v1/reserve/all_list']
       }
     },
     {
@@ -26,7 +26,7 @@ const orderRouter = {
       meta: {
         title: '寄存管理',
         noCache: true,
-        perms: ['GET /api/v1/save/list']
+        perms: ['GET /api/v1/save/list', 'POST /api/v1/save/add', 'POST /api/v1/save/edit', 'GET /api/v1/save/del,POST /api/v1/save/jiesuan']
       }
     },
     {
@@ -36,7 +36,7 @@ const orderRouter = {
       meta: {
         title: '服务处理',
         noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+        perms: ['GET /api/v1/service_info/service_infos_by_cemetery', 'POST /api/v1/servicebill/execute']
       }
     }
   ]

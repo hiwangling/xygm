@@ -16,7 +16,8 @@ export const vuexData = {
       'cems',
       'order',
       'payStatus',
-      'cname'
+      'cname',
+      'garden_id'
     ])
   },
   methods: {

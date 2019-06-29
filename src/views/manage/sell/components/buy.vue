@@ -89,6 +89,7 @@
 import { listbuy, editbuy, deletebuy, pay } from '@/api/buy'
 import { vuexData } from '@/utils/mixin'
 import VueForm from './form'
+import { parseTime } from '@/utils'
 export default {
   components: { VueForm },
   mixins: [vuexData],
@@ -153,13 +154,19 @@ export default {
         })
     },
     handleBury() {
+      this.resetForm()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.dataFormEdit = true
+      const setDate = new Date(this.dataForm.order_begin)
+      setDate.setFullYear(setDate.getFullYear() + 20)
+      setDate.setDate(setDate.getDate())
+      this.dataForm.order_begin = parseTime(this.dataForm.order_begin, '{y}-{m}-{d}')
+      this.dataForm.order_end = parseTime(setDate, '{y}-{m}-{d}')
+      console.log(this.dataForm)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      this.resetForm()
     },
     createData() {
       this.$refs['dataForm'].validate(valid => {
@@ -263,7 +270,7 @@ export default {
     resetForm() {
       this.dataForm = {
         cid: this.cems.id,
-        order_begin: '',
+        order_begin: new Date(),
         order_end: '',
         real_price: '',
         link_name: '',

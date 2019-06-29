@@ -79,6 +79,17 @@
             />
           </el-select>
         </el-form-item>
+
+        <el-form-item label="所属园区" prop="garden_id">
+          <el-select v-model="dataForm.garden_id" clearable placeholder="请选择">
+            <el-option
+              v-for="item in garden"
+              :key="item.id"
+              :label="item.type_name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -91,6 +102,7 @@
 </template>
 <script>
 import { listAdmin, createAdmin, updateAdmin } from '@/api/member'
+import { listGarden } from '@/api/garden'
 import { roleOptions } from '@/api/role'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -110,6 +122,7 @@ export default {
     return {
       list: null,
       total: 0,
+      garden: null,
       roleOptions: null,
       listGrade: null,
       listLoading: true,
@@ -140,7 +153,8 @@ export default {
       rules: {
         username: [{ required: true, message: '管理员名称不能为空', trigger: 'blur' }],
         password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
-        branch: [{ required: true, message: '部门不能为空', trigger: 'blur' }]
+        branch: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
+        garden_id: [{ required: true, message: '园区不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -175,6 +189,10 @@ export default {
           this.list = []
           this.total = 0
           this.listLoading = false
+        })
+      listGarden()
+        .then(res => {
+          this.garden = res.data.data
         })
     },
     handleFilter() {

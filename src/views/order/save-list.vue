@@ -6,8 +6,8 @@
       <el-select v-model="listQuery.save_status" placeholder="选择寄存状态" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in save" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加寄存信息</el-button>
+      <el-button v-permission="['POST /api/v1/save/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['POST /api/v1/save/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加寄存信息</el-button>
     </div>
     <el-dialog class="dialog" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
       <el-form ref="dataForm" :inline="true" :rules="rules" status-icon label-position="left" :model="dataForm" label-width="100px" style="margin-left:50px;">
@@ -102,10 +102,10 @@
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="220">
         <template slot-scope="scope">
           <template v-if="scope.row.save_status == 1">
-            <el-button v-if="scope.row.order_state == 1" type="warning" size="mini" @click="handlePay(scope.row)">付款</el-button>
+            <el-button v-if="scope.row.order_state == 1" v-permission="['POST /api/v1/save/jiesuan']" type="warning" size="mini" @click="handlePay(scope.row)">付款</el-button>
             <el-button v-else type="success" size="mini" @click="handleGo(scope.row)">取走</el-button>
-            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button v-permission="['POST /api/v1/save/edit']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button v-permission="['GET /api/v1/save/del']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
           </template>
           <template v-else>
             <el-button type="info" size="mini" plain disabled>已完结</el-button>

@@ -7,6 +7,7 @@ const getters = {
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
+  garden_id: state => state.user.garden_id,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   perms: state => state.user.perms,

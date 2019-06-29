@@ -2,9 +2,9 @@
   <el-dialog id="search" class="dialog" :title="dialogStatus" :visible.sync="dialogFormVisible" top="5vh" append-to-body>
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" placeholder="请输入墓穴名称" style="width: 200px;" />
-      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable class="filter-item" @change="getarea()">
+      <!-- <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable class="filter-item">
         <el-option v-for="item in cemetery.a" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
@@ -32,7 +32,7 @@
 import { page, vuexData } from '@/utils/mixin'
 import Pagination from '@/components/Pagination'
 import { listGrave } from '@/api/grave'
-import { get_areas } from '@/api/cemetery'
+// import { get_areas } from '@/api/cemetery'
 // import { listdead } from '@/api/dead'
 import { listType } from '@/api/type'
 export default {
@@ -44,7 +44,6 @@ export default {
       total: 0,
       cemeteryType: null,
       dialogStatus: '',
-      garen_id: '',
       listLoading: true,
       dialogFormVisible: false,
       listQuery: {
@@ -66,6 +65,7 @@ export default {
   },
   methods: {
     async getList() {
+      this.listQuery.y_id = this.garden_id
       this.listLoading = true
       await listType()
         .then(res => {
@@ -87,7 +87,6 @@ export default {
       await listGrave(this.listQuery)
         .then(res => {
           this.list = res.data.data
-          this.garen_id = res.data.data.y_id
           this.total = res.data.total || 0
           this.listLoading = false
         })
@@ -101,16 +100,16 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    getarea() {
-      const data = {
-        pid: this.garen_id || this.listQuery.y_id
-      }
-      this.listQuery.q_id = ''
-      get_areas(data)
-        .then(res => {
-          this.cemetery.a = res.data
-        })
-    },
+    // getarea() {
+    //   const data = {
+    //     pid: this.garen_id || this.listQuery.y_id
+    //   }
+    //   this.listQuery.q_id = ''
+    //   get_areas(data)
+    //     .then(res => {
+    //       this.cemetery.a = res.data
+    //     })
+    // },
     show() {
       this.dialogStatus = '墓穴查询'
       this.dialogFormVisible = true

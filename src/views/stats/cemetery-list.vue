@@ -3,9 +3,9 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 150px;" placeholder="请输入墓穴名称" />
-      <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
+      <!-- <el-select v-model="listQuery.y_id" placeholder="选择墓园" clearable style="width: 120px" class="filter-item" @change="getarea()">
         <el-option v-for="item in cemetery.g" :key="item.id" :label="item.type_name" :value="item.id" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery.q_id" placeholder="选择墓区" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in area" :key="item.id" :label="item.type_name" :value="item.id" />
       </el-select>
@@ -36,9 +36,9 @@
       <!-- <el-select v-model="listQuery.usestatus" placeholder="选择状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="(value, item) in cemetery.u" :key="item" :label="value" :value="item" />
       </el-select> -->
-      <el-button v-permission="['GET /api/v1/cemetery/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /api/v1/stat/az_bury_list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <!-- <el-button v-permission="['POST /api/v1/cemetery/add']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button> -->
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button v-permission="['GET /api/v1/stat/export_order_stat']" :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
@@ -108,6 +108,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      this.listQuery.y_id = this.garden_id
       CemeteryOrderList(this.listQuery)
         .then(res => {
           this.list = res.data.data

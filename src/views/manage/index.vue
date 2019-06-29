@@ -30,10 +30,12 @@
 import { listArea } from '@/api/area'
 import { listGrave } from '@/api/grave'
 import { get_gardens } from '@/api/cemetery'
+import { page, vuexData } from '@/utils/mixin'
 import grave from './list'
 export default {
   name: 'VueList',
   components: { grave },
+  mixins: [page, vuexData],
   data() {
     return {
       list: null,
@@ -49,6 +51,7 @@ export default {
         limit: 20,
         pid: undefined,
         sort: 'add_time',
+        y_id: '',
         order: 'desc'
       }
     }
@@ -62,6 +65,8 @@ export default {
   },
   methods: {
     getList() {
+      console.log(this.listQuery)
+      this.listQuery.y_id = this.garden_id
       this.listLoading = true
       listArea(this.listQuery)
         .then(res => {
@@ -83,6 +88,7 @@ export default {
         this.flag = false
       } else {
         this.listQuery.page = 1
+        this.listQuery.y_id = this.garden_id
         listGrave(this.listQuery)
           .then(res => {
             this.sreach = res.data.data
@@ -113,7 +119,7 @@ export default {
    }
 .image {
     width: 100%;
-    /* height: 200px; */
+     height: 150px;
     display: block;
   }
   .manage-tag{

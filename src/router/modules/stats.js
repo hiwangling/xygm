@@ -16,7 +16,7 @@ const statsRouter = {
       meta: {
         title: '购墓统计',
         noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+        perms: ['GET /api/v1/stat/buy_order_list', 'GET /api/v1/stat/export_order_stat']
       }
     },
     {
@@ -26,7 +26,7 @@ const statsRouter = {
       meta: {
         title: '服务统计',
         noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+        perms: ['GET /api/v1/stat/buy_services_list', 'GET /api/v1/stat/export_services_stat']
       }
     },
     {
@@ -36,7 +36,7 @@ const statsRouter = {
       meta: {
         title: '点灯统计',
         noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+        perms: ['GET /api/v1/stat/buy_lightup_list', 'GET /api/v1/stat/export_lightup_stat']
       }
     },
     {
@@ -46,7 +46,7 @@ const statsRouter = {
       meta: {
         title: '安葬统计',
         noCache: true,
-        perms: ['GET /api/v1/service_info/service_infos_by_cemetery']
+        perms: ['GET /api/v1/stat/az_bury_list', 'GET /api/v1/stat/export_bury_stat']
       }
     },
     {
