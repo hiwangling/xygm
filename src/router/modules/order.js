@@ -10,7 +10,7 @@ const orderRouter = {
   meta: { title: '订单管理', icon: 'shopping' },
   children: [
     {
-      path: 'reserve-list',
+      path: '/reserve-list',
       name: 'VueReserveList',
       component: () => import('@/views/order/reserve-list'),
       meta: {
@@ -20,7 +20,7 @@ const orderRouter = {
       }
     },
     {
-      path: 'save-list',
+      path: '/save-list',
       name: 'VueSaveList',
       component: () => import('@/views/order/save-list'),
       meta: {
@@ -30,7 +30,7 @@ const orderRouter = {
       }
     },
     {
-      path: 'service-handle',
+      path: '/service-handle',
       name: 'VueServiceHandle',
       component: () => import('@/views/order/service-handle'),
       meta: {

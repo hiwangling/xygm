@@ -10,7 +10,7 @@ const serviceRouter = {
   meta: { title: '服务设置', icon: 'list' },
   children: [
     {
-      path: 'service-info',
+      path: '/service-info',
       name: 'VueInfo',
       component: () => import('@/views/service/service-info'),
       meta: {
@@ -20,7 +20,7 @@ const serviceRouter = {
       }
     },
     {
-      path: 'service-combo',
+      path: '/service-combo',
       name: 'VueCombo',
       component: () => import('@/views/service/service-combo'),
       meta: {

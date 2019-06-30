@@ -10,7 +10,7 @@ const statsRouter = {
   meta: { title: '统计管理', icon: 'nested' },
   children: [
     {
-      path: 'cemetery-list',
+      path: '/cemetery-list',
       name: 'VueCemeteryList',
       component: () => import('@/views/stats/cemetery-list'),
       meta: {
@@ -20,7 +20,7 @@ const statsRouter = {
       }
     },
     {
-      path: 'service-list',
+      path: '/service-list',
       name: 'VueServiceList',
       component: () => import('@/views/stats/service-list'),
       meta: {
@@ -30,7 +30,7 @@ const statsRouter = {
       }
     },
     {
-      path: 'lamp-list',
+      path: '/lamp-list',
       name: 'VueLampList',
       component: () => import('@/views/stats/lamp-list'),
       meta: {
@@ -40,7 +40,7 @@ const statsRouter = {
       }
     },
     {
-      path: 'bury-list',
+      path: '/bury-list',
       name: 'VueBuryList',
       component: () => import('@/views/stats/bury-list'),
       meta: {
@@ -50,7 +50,7 @@ const statsRouter = {
       }
     },
     {
-      path: 'data-list',
+      path: '/data-list',
       name: 'VueDataList',
       component: () => import('@/views/stats/data-list'),
       meta: {
@@ -60,7 +60,7 @@ const statsRouter = {
       }
     },
     {
-      path: 'old-list',
+      path: '/old-list',
       name: 'VueOldList',
       component: () => import('@/views/stats/old-list'),
       meta: {

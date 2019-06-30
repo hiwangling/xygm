@@ -65,7 +65,7 @@ export const asyncRoutes = [
   cemeteryRouter,
   serviceRouter,
   settingRouter,
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/', hidden: true }
 
 ]
 

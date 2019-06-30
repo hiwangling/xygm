@@ -10,7 +10,7 @@ const settingRouter = {
   meta: { title: '系统设置', icon: 'peoples' },
   children: [
     {
-      path: 'group',
+      path: '/group',
       name: 'VueGroup',
       component: () => import('@/views/setting/group'),
       meta: {
@@ -20,7 +20,7 @@ const settingRouter = {
       }
     },
     {
-      path: 'manager',
+      path: '/manager',
       name: 'VueManager',
       component: () => import('@/views/setting/manager'),
       meta: {
@@ -30,7 +30,7 @@ const settingRouter = {
       }
     },
     {
-      path: 'password',
+      path: '/password',
       name: 'ChangePassword',
       component: () => import('@/views/setting/password'),
       meta: {

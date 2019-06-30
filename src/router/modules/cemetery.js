@@ -10,7 +10,7 @@ const cemeteryRouter = {
   meta: { title: '公墓管理', icon: 'component' },
   children: [
     {
-      path: 'garden',
+      path: '/garden',
       name: 'VueGarden',
       component: () => import('@/views/cemetery/garden'),
       meta: {
@@ -20,7 +20,7 @@ const cemeteryRouter = {
       }
     },
     {
-      path: 'area',
+      path: '/area',
       name: 'VueArea',
       component: () => import('@/views/cemetery/area'),
       meta: {
@@ -30,7 +30,7 @@ const cemeteryRouter = {
       }
     },
     {
-      path: 'grave',
+      path: '/grave',
       name: 'VueGrave',
       component: () => import('@/views/cemetery/grave'),
       meta: {
@@ -40,7 +40,7 @@ const cemeteryRouter = {
       }
     },
     {
-      path: 'style',
+      path: '/style',
       name: 'VueStyle',
       component: () => import('@/views/cemetery/style'),
       meta: {
@@ -50,7 +50,7 @@ const cemeteryRouter = {
       }
     },
     {
-      path: 'type',
+      path: '/type',
       name: 'VueType',
       component: () => import('@/views/cemetery/type'),
       meta: {
