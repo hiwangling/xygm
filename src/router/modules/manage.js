@@ -34,9 +34,9 @@ const manageRouter = {
   component: Layout,
   children: [
     {
-      path: '/dashboard',
+      path: '/VueList',
       component: () => import('@/views/manage/index'),
-      name: 'Dashboard',
+      name: 'VueList',
       meta: { title: '业务大厅', icon: 'tab', affix: true, perms: ['GET /api/v1/cemetery_classify/a_list'] }
     },
     {
