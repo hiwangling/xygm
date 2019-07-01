@@ -8,7 +8,7 @@
     <div v-show="!flag" class="main">
       <el-row :gutter="20" class="area">
         <el-col v-for="(item, index) in list" :key="index" :span="4">
-          <router-link :to="'/manage/list/'+item.id" class="">
+          <router-link :to="'/list/'+item.id" class="">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size:16px">{{ item.type_name }}</span>
@@ -33,7 +33,7 @@ import { get_gardens } from '@/api/cemetery'
 import { page, vuexData } from '@/utils/mixin'
 import grave from './list'
 export default {
-  name: 'VueList',
+  name: 'Manage',
   components: { grave },
   mixins: [page, vuexData],
   data() {

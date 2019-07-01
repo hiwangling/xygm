@@ -63,7 +63,8 @@ const cemeteryRouter = {
       name: 'VueScreen',
       component: () => import('@/views/cemetery/screen'),
       meta: {
-        title: '大屏管理'
+        title: '大屏管理',
+        perms: ['POST /api/v1/cemetery_type/list', 'POST /api/v1/cemetery_type/add', 'POST /api/v1/cemetery_type/edit', 'POST /api/v1/cemetery_type/del']
       }
     }
   ]

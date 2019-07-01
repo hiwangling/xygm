@@ -37,7 +37,7 @@ import lamp from './lamp/lamp'
 import swap from './swap/swap'
 import move from './move/move'
 export default {
-  name: 'VueLists',
+  name: 'List',
   components: { Pagination, Service, Sell, Reserve, lamp, swap, move },
   mixins: [vuexData],
   data() {

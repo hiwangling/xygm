@@ -34,7 +34,7 @@ const manageRouter = {
   component: Layout,
   children: [
     {
-      path: '/VueList',
+      path: '/manage',
       component: () => import('@/views/manage/index'),
       name: 'manage',
       meta: { title: '业务大厅', icon: 'tab', affix: true, perms: ['GET /api/v1/cemetery_classify/a_list'] }
@@ -42,7 +42,7 @@ const manageRouter = {
     {
       path: '/list/:id(\\d+)',
       component: () => import('@/views/manage/list'),
-      name: 'VueLists',
+      name: 'list',
       meta: {
         title: '业务办理',
         noCache: true
