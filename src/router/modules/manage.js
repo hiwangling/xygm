@@ -36,7 +36,7 @@ const manageRouter = {
     {
       path: '/VueList',
       component: () => import('@/views/manage/index'),
-      name: 'VueList',
+      name: 'manage',
       meta: { title: '业务大厅', icon: 'tab', affix: true, perms: ['GET /api/v1/cemetery_classify/a_list'] }
     },
     {
